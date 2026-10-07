@@ -1,0 +1,159 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root{
+    -fx-background-color: #303030;
+    -fx-border-color: silver;
+}
+
+.top-bar{
+    -fx-background-color: linear-gradient(to bottom, #505050, #303030);
+}
+.top-bar:hover{
+    -fx-background-color: linear-gradient(to bottom, #707070, #505050);
+}
+
+.top-bar-icon{
+    -fx-stroke: white;
+}
+
+.top-bar-icon:hover{
+    -fx-background-color: red;
+}
+
+.heading{
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+
+.label, .label:selected, .check-box:selected, .radio-button:selected{
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+}
+.check-box, .radio-button{
+    -fx-text-fill: #888888;
+    -fx-font-weight: bold;
+}
+
+.check-box .box, .check-box .mark{
+    -fx-background-color: #888888;
+}
+
+.check-box .box{
+    -fx-background-radius: 5;
+}
+
+.check-box:selected .box{
+    -fx-background-color: white;
+}
+
+.check-box:selected .mark{
+    -fx-background-color: #7B2622;
+}
+
+.titled-pane{
+    -fx-text-fill: #e8e8e8;
+}
+.title{
+    -fx-background-color: #303030;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.tooltip{
+    -fx-font-size: 14;
+    -fx-font-style: italic;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-color: #e8e8e8;
+}
+.text-field:readonly{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: #505050;
+}
+.text-field{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-background-color: #c0c0c0;
+}
+
+.content{
+    -fx-background-color: #080808;
+	-fx-border-color: white;
+	-fx-border-insets: 1;
+}
+.spinner{
+    -fx-background-color: #282828;
+}
+
+.choice-box, .button{
+    -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+.context-menu{
+    -fx-background-color: #9B4642;
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+}
+.choice-box:hover, .button:hover{
+    -fx-background-color: linear-gradient(to bottom, #DB8682, #9B4642);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+
+.toggle-button:selected{
+    -fx-text-fill: #e8e8e8;
+}
+.toggle-button{
+    -fx-background-color: transparent;
+    -fx-text-fill: #8e8e8e;
+    -fx-font-weight: bold;
+}
+
+
+.increment-arrow-button{
+    -fx-background-radius: 0 6 0 0;
+    -fx-background-color: linear-gradient(to bottom, #BB6662, #9B4642);
+}
+.decrement-arrow-button{
+    -fx-background-radius: 0 0 6 0;
+    -fx-background-color: linear-gradient(to bottom, #9B4642, #7B2622);
+}
+.increment-arrow, .decrement-arrow, .arrow{
+    -fx-background-color: #e8e8e8;
+}
+.increment-arrow-button:hover{
+    -fx-background-radius: 0 6 0 0;
+    -fx-background-color: linear-gradient(to bottom, #DB8682, #AB6662);
+}
+.decrement-arrow-button:hover{
+    -fx-background-radius: 0 0 6 0;
+    -fx-background-color: linear-gradient(to bottom, #AB6662, #9B4642);
+}
+
+.big-text-field{
+    -fx-font-size: 24;
+}
+
+.key-text-field:readonly{
+    -fx-text-fill: silver;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: black;
+    -fx-border-color: silver;
+    -fx-border-width: 2;
+}
+
+.lamp-text-field:readonly{
+    -fx-text-fill: black;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: white;
+    -fx-border-color: silver;
+    -fx-border-width: 2;
+}
+

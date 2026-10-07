@@ -1,0 +1,89 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.root{
+    -fx-background-color: black;
+    -fx-border-color: silver;
+}
+.top-bar{
+    -fx-background-color: linear-gradient(to bottom, #505050, #303030);
+}
+.top-bar:hover{
+    -fx-background-color: linear-gradient(to bottom, #707070, #505050);
+}
+
+.top-bar-icon:hover{
+    -fx-background-color: red;
+}
+
+.label {
+    -fx-text-fill: #e8e8e8;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-label-padding: 2;
+    -fx-alignment: center;
+}
+
+.choice-box, .color-picker, .button{
+    -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+.choice-box:hover, .button:hover{
+    -fx-background-color: linear-gradient(to bottom, #DB8682, #9B4642);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+
+.tooltip{
+    -fx-font-size: 14;
+    -fx-font-style: italic;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-color: #e8e8e8;
+}
+
+.text-field{
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-font-family: monospace;
+    -fx-text-fill: black;
+    -fx-background-color: #e8e8e8;
+}
+
+.select-guide{
+    -fx-stroke: silver;
+    -fx-stroke-width: 5;
+}
+
+.select-line{
+    -fx-stroke: green;
+    -fx-stroke-width: 5;
+}
+
+.unselect-guide{
+    -fx-stroke: maroon;
+    -fx-stroke-width: 4;
+}
+
+.select-text{
+    -fx-fill: white;
+    -fx-stroke: white;
+}
+
+.select-button{
+    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #A0A0A0, #606060);
+}
+
+.select-button-selected{
+    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #FFFF00, #A0A000);
+}
+
+.select-button-hover{
+    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #80FF80, #00FF00);
+}
+
+.select-button-hoverused{
+    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #FF8080, #FF0000);
+}
+
