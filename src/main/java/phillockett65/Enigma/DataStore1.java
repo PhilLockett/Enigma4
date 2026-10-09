@@ -42,12 +42,9 @@ public class DataStore1 extends DataStore {
 
     private double mainX;
     private double mainY;
-    private double reflectorX;
-    private double reflectorY;
-    private double plugboardX;
-    private double plugboardY;
 
     private String reflectorChoice;
+    private Boolean reconfigurable;
     private ArrayList<String> pairs;
 
     private Boolean fourthWheel;
@@ -88,12 +85,9 @@ public class DataStore1 extends DataStore {
 
         mainX = model.getMainXPos();
         mainY = model.getMainYPos();
-        reflectorX = model.getReflectorXPos();
-        reflectorY = model.getReflectorYPos();
-        plugboardX = model.getPlugboardXPos();
-        plugboardY = model.getPlugboardYPos();
 
         reflectorChoice = model.getReflectorChoice();
+        reconfigurable = model.isReconfigurable();
 
         pairs = model.getPairText();
 
@@ -122,10 +116,9 @@ public class DataStore1 extends DataStore {
         boolean success = true;
 
         model.setMainPos(mainX, mainY);
-        model.setReflectorPos(reflectorX, reflectorY);
-        model.setPlugboardPos(plugboardX, plugboardY);
 
         model.initReflectorChoice(reflectorChoice);
+        model.setReconfigurable(reconfigurable);
 
         model.initPairText(pairs);
 
@@ -218,12 +211,9 @@ public class DataStore1 extends DataStore {
         Debug.info(DD, "");
         Debug.info(DD, "mainX = " + mainX);
         Debug.info(DD, "mainY = " + mainY);
-        Debug.info(DD, "reflectorX = " + reflectorX);
-        Debug.info(DD, "reflectorY = " + reflectorY);
-        Debug.info(DD, "plugboardX = " + plugboardX);
-        Debug.info(DD, "plugboardY = " + plugboardY);
         Debug.info(DD, "");
         Debug.info(DD, "reflectorChoice = " + reflectorChoice);
+        Debug.info(DD, "reconfigurable = " + reconfigurable);
         Debug.info(DD, "pairs = " + pairs);
         Debug.info(DD, "");
         Debug.info(DD, "fourthWheel = " + fourthWheel);

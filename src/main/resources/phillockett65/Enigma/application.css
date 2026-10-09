@@ -27,7 +27,7 @@
 }
 
 .label, .label:selected, .check-box:selected, .radio-button:selected{
-    -fx-text-fill: #e8e8e8;
+    -fx-text-fill: #dddddd;
     -fx-font-weight: bold;
 }
 .check-box, .radio-button{
@@ -90,11 +90,12 @@
 .choice-box, .button{
     -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
     -fx-text-fill: #e8e8e8;
+    -fx-mark-color: #e8e8e8;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
 }
-.context-menu{
-    -fx-background-color: #9B4642;
+.choice-box .context-menu{
+    -fx-background-color: #7B2622;
     -fx-text-fill: #e8e8e8;
     -fx-font-weight: bold;
 }
@@ -103,6 +104,9 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
+}
+.choice-box .menu-item:focused{
+    -fx-background-color: #9B4642;
 }
 
 .toggle-button:selected{

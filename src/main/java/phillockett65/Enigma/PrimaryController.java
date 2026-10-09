@@ -29,11 +29,7 @@
  */
 package phillockett65.Enigma;
 
-import java.util.ArrayList;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,6 +47,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 import phillockett65.Debug.Debug;
+import phillockett65.Enigma.ButtonControl.ButtonEvent;
 import phillockett65.Enigma.SwitchControl.SwitchEvent;
 
 public class PrimaryController {
@@ -134,19 +131,15 @@ public class PrimaryController {
      */
     public void syncUI() {
         reflectorChoicebox.setValue(model.getReflectorChoice());
+        setReconfigurable();
+        configureControl.setSelected(model.isReconfigurable());
 
-        for (int i = 0; i < pairs.size(); ++i) {
-            TextField pair = pairs.get(i);
-            pair.setText(model.getPairText(i));
-        }
+        displayPairs();
 
         fourthWheelControl.setSelected(model.isFourthWheel());
         showStepsControl.setSelected(model.isShow());
 
-        for (int i = 0; i < plugs.size(); ++i) {
-            TextField plug = plugs.get(i);
-            plug.setText(model.getPlugText(i));
-        }
+        displayPlugs();
     }
 
 
@@ -223,7 +216,7 @@ public class PrimaryController {
     private void initializeTopBar() {
         topBar.getChildren().add(buildCancel());
     }
-  
+
 
      /************************************************************************
      * Support code for "Reflector Set-Up" panel.
@@ -231,64 +224,25 @@ public class PrimaryController {
 
     @FXML
     private TitledPane reflectorSetUpTitledPane;
-  
+
     @FXML
     private ChoiceBox<String> reflectorChoicebox;
 
     @FXML
-    private Button reflectorButton;
+    private HBox configureHBox;
+
+    private SwitchControl configureControl;
 
     @FXML
-    private TextField pair0;
+    private HBox reflectorHBox;
+
+    private ButtonControl reflectorEditControl;
 
     @FXML
-    private TextField pair1;
-
-    @FXML
-    private TextField pair2;
-
-    @FXML
-    private TextField pair3;
-
-    @FXML
-    private TextField pair4;
-
-    @FXML
-    private TextField pair5;
-
-    @FXML
-    private TextField pair6;
-
-    @FXML
-    private TextField pair7;
-
-    @FXML
-    private TextField pair8;
-
-    @FXML
-    private TextField pair9;
-
-    @FXML
-    private TextField pair10;
-
-    @FXML
-    private TextField pair11;
-
-    private ArrayList<TextField> pairs = new ArrayList<TextField>(Model.PAIR_COUNT);
+    private TextField pairList;
 
     private void displayPairs() {
-        final int max = model.getPairCount();
-        for (int index = 0; index < max; ++index) {
-            TextField pair = pairs.get(index);
-            pair.setText(model.getPairText(index));
-        }
-    }
-
-    @FXML
-    void reflectorButtonOnAction(ActionEvent event) {
-        if (model.launchReflector()) {
-            displayPairs();
-        }
+        pairList.setText(model.getPairString());
     }
 
 
@@ -299,17 +253,16 @@ public class PrimaryController {
     private void setReconfigurable() {
         final boolean reconfigurable = model.isReconfigurable();
 
-        reflectorButton.setDisable(!reconfigurable);
-        for (TextField field : pairs) {
-            field.setDisable(!reconfigurable);
-        }
+        reflectorChoicebox.setDisable(reconfigurable);
+        reflectorEditControl.setDisable(!reconfigurable);
+        pairList.setDisable(!reconfigurable);
     }
 
     /**
      * Initialize "Reflector" panel.
      */
     private void initializeReflector() {
-        reflectorSetUpTitledPane.setTooltip(new Tooltip("Select which Reflector (reversing drum) to use"));
+        // reflectorSetUpTitledPane.setTooltip(new Tooltip("Select which Reflector (reversing drum) to use"));
 
         reflectorChoicebox.setItems(model.getReflectorList());
         reflectorChoicebox.setTooltip(new Tooltip("Select a Reflector"));
@@ -319,32 +272,42 @@ public class PrimaryController {
             setReconfigurable();
         });
 
-        reflectorButton.setTooltip(new Tooltip("Edit the reconfigurable Reflector"));
+        configureControl = new SwitchControl("Configure", false);
+        configureControl.addEventFilter(SwitchEvent.ANY, this::handleConfigureEvent);
+        configureControl.setTooltip("Select to use a configurable Reflector");
 
-        pairs.add(pair0);
-        pairs.add(pair1);
-        pairs.add(pair2);
-        pairs.add(pair3);
-        pairs.add(pair4);
-        pairs.add(pair5);
-        pairs.add(pair6);
-        pairs.add(pair7);
-        pairs.add(pair8);
-        pairs.add(pair9);
-        pairs.add(pair10);
-        pairs.add(pair11);
+        configureHBox.getChildren().add(configureControl);
 
-        for (int i = 0; i < pairs.size(); ++i) {
-            String id = String.valueOf(i);
-            TextField pair = pairs.get(i);
-            pair.setId(id);         // Use id as an index.
-            pair.setEditable(false);
-            pair.setText(model.getPairText(i));
-        }
+        reflectorEditControl = new ButtonControl("Edit", true);
+        reflectorEditControl.addEventFilter(ButtonEvent.ANY, this::handleReflectorEditEvent);
+        reflectorEditControl.setTooltip("Edit the configurable Reflector");
+
+        pairList.setTooltip(new Tooltip("Current Reflector configuration"));
+
+        reflectorHBox.getChildren().add(reflectorEditControl);
+        displayPairs();
 
         setReconfigurable();
     }
 
+    private void handleReflectorEditEvent(ButtonEvent event) {
+        Debug.trace(DD, "handleReflectorEditEvent()");
+
+        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+            if (model.launchReflector()) {
+                displayPairs();
+            }
+        }
+    }
+
+    private void handleConfigureEvent(SwitchEvent event) {
+        Debug.trace(DD, "handleConfigureEvent() " + event.isOn());
+
+        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+            model.setReconfigurable(event.isOn());
+            setReconfigurable();
+        }
+    }
 
 
     /************************************************************************
@@ -366,17 +329,19 @@ public class PrimaryController {
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
-        fourthWheelControl = new SwitchControl("Use Fourth Rotor", 1.0);
+        // rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
+
+        fourthWheelControl = new SwitchControl("Use Fourth Rotor", false);
+        fourthWheelControl.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
+
         fourthWheelHBox.getChildren().add(fourthWheelControl);
-        fourthWheelHBox.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
 
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
 
-        rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
         fourthWheelControl.setTooltip("Select to use a fourth Rotor");
     }
 
-    public void handleFourthWheelEvent(SwitchEvent event) {
+    private void handleFourthWheelEvent(SwitchEvent event) {
         Debug.trace(DD, "handleFourthWheelEvent() " + event.isOn());
 
         if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
@@ -393,100 +358,44 @@ public class PrimaryController {
     private TitledPane plugboardConnectionsTitledPane;
 
     @FXML
-    private Button plugboardButton;
+    private HBox plugboardHBox;
+
+    private ButtonControl plugboardEditControl;
 
     @FXML
-    private TextField plug0;
-
-    @FXML
-    private TextField plug1;
-
-    @FXML
-    private TextField plug2;
-
-    @FXML
-    private TextField plug3;
-
-    @FXML
-    private TextField plug4;
-
-    @FXML
-    private TextField plug5;
-
-    @FXML
-    private TextField plug6;
-
-    @FXML
-    private TextField plug7;
-
-    @FXML
-    private TextField plug8;
-
-    @FXML
-    private TextField plug9;
-
-    @FXML
-    private TextField plug10;
-
-    @FXML
-    private TextField plug11;
-
-    @FXML
-    private TextField plug12;
-
-    private ArrayList<TextField> plugs = new ArrayList<TextField>(Model.FULL_COUNT);
-
+    private TextField plugList;
 
     private void displayPlugs() {
-        for (TextField field : plugs) {
-            field.setText("");
-        }
-
-        final int max = model.getPlugCount();
-        for (int index = 0; index < max; ++index) {
-            TextField plug = plugs.get(index);
-            plug.setText(model.getPlugText(index));
-        }
+        plugList.setText(model.getPlugString());
     }
 
-    @FXML
-    void plugboardButtonOnAction(ActionEvent event) {
-        if (model.launchPlugboard()) {
-            displayPlugs();
-        }
-    }
 
     /**
      * Initialize "Plugboard Connections" panel.
      */
     private void initializePlugboardConnections() {
+        // plugboardConnectionsTitledPane.setTooltip(new Tooltip("Configure the Plugboard using unique wiring pairs"));
 
-        plugboardConnectionsTitledPane.setTooltip(new Tooltip("Configure the Plugboard using unique wiring pairs"));
-        plugboardButton.setTooltip(new Tooltip("Edit the Plugboard"));
+        plugboardEditControl = new ButtonControl("Edit", true);
+        plugboardEditControl.addEventFilter(ButtonEvent.ANY, this::handlePlugboardEditEvent);
+        plugboardEditControl.setTooltip("Edit the Plugboard");
 
-        plugs.add(plug0);
-        plugs.add(plug1);
-        plugs.add(plug2);
-        plugs.add(plug3);
-        plugs.add(plug4);
-        plugs.add(plug5);
-        plugs.add(plug6);
-        plugs.add(plug7);
-        plugs.add(plug8);
-        plugs.add(plug9);
-        plugs.add(plug10);
-        plugs.add(plug11);
-        plugs.add(plug12);
+        plugboardHBox.getChildren().add(plugboardEditControl);
 
-        for (int i = 0; i < plugs.size(); ++i) {
-            String id = String.valueOf(i);
-            TextField plug = plugs.get(i);
-            plug.setId(id);         // Use id as an index.
-            plug.setEditable(false);
-            plug.setText(model.getPlugText(i));
-        }
+        plugList.setTooltip(new Tooltip("Current Plugboard connections"));
+
+        displayPlugs();
     }
 
+    private void handlePlugboardEditEvent(ButtonEvent event) {
+        Debug.trace(DD, "handlePlugboardEditEvent()");
+
+        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+            if (model.launchPlugboard()) {
+                displayPlugs();
+            }
+        }
+    }
 
 
     /************************************************************************
@@ -520,28 +429,29 @@ public class PrimaryController {
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
-        showStepsControl = new SwitchControl("Show Translation", 1.0);
+        showStepsControl = new SwitchControl("Show Translation", false);
+        showStepsControl.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
+        showStepsControl.setTooltip("Select to show each translation step on the command line");
+
         showStepsHBox.getChildren().add(showStepsControl);
-        showStepsHBox.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
 
         settingsChoicebox.setItems(model.getSettingsList());
+        settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
 
         settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             model.dailySettings(newValue);
             syncUI();
         });
 
-        showStepsControl.setTooltip("Show each translation step on the command line when selected");
-        settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
-        keyIO.setTooltip(new Tooltip("Key pressed"));
-        lampIO.setTooltip(new Tooltip("Translated result"));
-
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
 
         Circle circle = new Circle(25);
         keyIO.setShape(circle);
+        keyIO.setTooltip(new Tooltip("Key pressed"));
+
         lampIO.setShape(circle);
+        lampIO.setTooltip(new Tooltip("Translated result"));
     }
 
 
@@ -572,7 +482,7 @@ public class PrimaryController {
         }
     }
 
-    public void handleShowStepsEvent(SwitchEvent event) {
+    private void handleShowStepsEvent(SwitchEvent event) {
         Debug.trace(DD, "handleShowStepsEvent() " + event.isOn());
 
         if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {

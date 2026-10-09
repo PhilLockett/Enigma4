@@ -41,7 +41,6 @@ public class Model {
     private static final int DD = 0;
 
     public final static String DATAFILE = "Settings.ser";
-    private final static String CONFIGURABLE = "CONFIGURABLE";
 
     public final static int FULL_COUNT = 13;
     public final static int PAIR_COUNT = 12;
@@ -56,19 +55,21 @@ public class Model {
 
     private boolean defaulted = false;
     public boolean isDefaulted() { return defaulted; }
-    
+
     private Stage stage;
     public void setMainPos(double x, double y) { stage.setX(x); stage.setY(y); }
     public double getMainXPos() { return stage.getX(); }
     public double getMainYPos() { return stage.getY(); }
+    public double getMainWidth() { return stage.getWidth(); }
+    public double getMainHeight() { return stage.getHeight(); }
 
-    public void setReflectorPos(double x, double y) { reflectorControl.setPos(x, y); }
-    public double getReflectorXPos() { return reflectorControl.getXPos(); }
-    public double getReflectorYPos() { return reflectorControl.getYPos(); }
-
-    public void setPlugboardPos(double x, double y) { plugboardControl.setPos(x, y); }
-    public double getPlugboardXPos() { return plugboardControl.getXPos(); }
-    public double getPlugboardYPos() { return plugboardControl.getYPos(); }
+    /**
+     * Get the roundness of buttons and switches. A value of 1.0 gives a 
+     * maximum roundness, whereas a value of 0.0 gives square corners.
+     * @return roundness value between 0.0 and 1.0.
+     */
+    public double getRoundness() { return 1.0; }
+    public double getSeparation() { return 4.0; }
 
 
     /************************************************************************
@@ -159,8 +160,9 @@ public class Model {
 
         ArrayList<String> list = Mapper.splitWords(settings.getReflector());
         initPairText(list);
-        setReflectorChoice(CONFIGURABLE);
-
+        setReconfigurable(true);
+        updateReflector();
+ 
         initFourthWheel(false);
 
         for (int i = 0; i < ROTOR_COUNT; ++i) {
@@ -204,18 +206,6 @@ public class Model {
         new RotorData("IIC",    "HQZGPJTMOBLNCIFDYAWVEUSRKX",	"1924",	"Commercial Enigma A, B", "F"),
         new RotorData("IIIC",   "UQNTLSZFMREHDPXKIBVYGJCWOA",	"1924",	"Commercial Enigma A, B", "W"),
 
-        new RotorData("I-R",    "JGDQOXUSCAMIFRVTPNEWKBLZYH",	"7 February 1941",	"German Railway (Rocket)", "R"),
-        new RotorData("II-R",   "NTZPSFBOKMWRCJDIVLAEYUXHGQ",	"7 February 1941",	"German Railway (Rocket)", "F"),
-        new RotorData("III-R",  "JVIUBHTCDYAKEQZPOSGXNRMWFL",	"7 February 1941",	"German Railway (Rocket)", "W"),
-        new RotorData("UKW-R",  "QYHOGNECVPUZTFDJAXWMKISRBL",	"7 February 1941",	"German Railway (Rocket)", ""),
-        new RotorData("ETW-R",  "QWERTZUIOASDFGHJKPYXCVBNML",	"7 February 1941",	"German Railway (Rocket)", ""),
-
-        new RotorData("I-K",    "PEZUOHXSCVFMTBGLRINQJWAYDK",	"February 1939",	"Swiss K", "R"),
-        new RotorData("II-K",   "ZOUESYDKFWPCIQXHMVBLGNJRAT",	"February 1939",	"Swiss K", "F"),
-        new RotorData("III-K",  "EHRVXGAOBQUSIMZFLYNWKTPDJC",	"February 1939",	"Swiss K", "W"),
-        new RotorData("UKW-K",  "IMETCGFRAYSQBZXWLHKDVUPOJN",	"February 1939",	"Swiss K", ""),
-        new RotorData("ETW-K",  "QWERTZUIOASDFGHJKPYXCVBNML",	"February 1939",	"Swiss K", ""),
-
         new RotorData("I",      "EKMFLGDQVZNTOWYHXUSPAIBRCJ",	"1930",	"Enigma I", "R"),
         new RotorData("II",     "AJDKSIRUXBLHWTMCQGZNPYFVOE",	"1930",	"Enigma I", "F"),
         new RotorData("III",    "BDFHJLCPRTXVZNYEIWGAKMUSQO",	"1930",	"Enigma I", "W"),
@@ -225,14 +215,26 @@ public class Model {
         new RotorData("VII",    "NZJHGRCXMYSWBOUFAIVLPEKQDT",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"),
         new RotorData("VIII",   "FKQHTLXOCBJSPDZRAMEWNIUYGV",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"),
 
-        new RotorData("Beta",               "LEYJVCNIXWPBQMDRTAKZGFUHOS",	"Spring 1941",	"M4 R2", ""),
-        new RotorData("Gamma",              "FSOKANUERHMBTIYCWLQPZXVGJD",	"Spring 1942",	"M4 R2", ""),
+        new RotorData("I-K",    "PEZUOHXSCVFMTBGLRINQJWAYDK",	"February 1939",	"Swiss K", "R"),
+        new RotorData("II-K",   "ZOUESYDKFWPCIQXHMVBLGNJRAT",	"February 1939",	"Swiss K", "F"),
+        new RotorData("III-K",  "EHRVXGAOBQUSIMZFLYNWKTPDJC",	"February 1939",	"Swiss K", "W"),
+        new RotorData("UKW-K",  "IMETCGFRAYSQBZXWLHKDVUPOJN",	"February 1939",	"Swiss K", ""),
+        new RotorData("ETW-K",  "QWERTZUIOASDFGHJKPYXCVBNML",	"February 1939",	"Swiss K", ""),
+
+        new RotorData("I-R",    "JGDQOXUSCAMIFRVTPNEWKBLZYH",	"7 February 1941",	"German Railway (Rocket)", "R"),
+        new RotorData("II-R",   "NTZPSFBOKMWRCJDIVLAEYUXHGQ",	"7 February 1941",	"German Railway (Rocket)", "F"),
+        new RotorData("III-R",  "JVIUBHTCDYAKEQZPOSGXNRMWFL",	"7 February 1941",	"German Railway (Rocket)", "W"),
+        new RotorData("UKW-R",  "QYHOGNECVPUZTFDJAXWMKISRBL",	"7 February 1941",	"German Railway (Rocket)", ""),
+        new RotorData("ETW-R",  "QWERTZUIOASDFGHJKPYXCVBNML",	"7 February 1941",	"German Railway (Rocket)", ""),
+
         new RotorData("Reflector A",        "EJMZALYXVBWFCRQUONTSPIKHGD",	"",	"", ""),
         new RotorData("Reflector B",        "YRUHQSLDPXNGOKMIEBFZCWVJAT",	"",	"", ""),
         new RotorData("Reflector C",        "FVPJIAOYEDRZXWGCTKUQSBNMHL",	"",	"", ""),
         new RotorData("Reflector B Thin",   "ENKQAUYWJICOPBLMDXZVFTHRGS",	"1940",	"M4 R1 (M3 + Thin)", ""),
         new RotorData("Reflector C Thin",   "RDOBJNTKVEHMLFCWZAXGYIPSUQ",	"1940",	"M4 R1 (M3 + Thin)", ""),
         new RotorData("ETW",                "ABCDEFGHIJKLMNOPQRSTUVWXYZ",	"",	"Enigma I", ""),
+        new RotorData("Beta",               "LEYJVCNIXWPBQMDRTAKZGFUHOS",	"Spring 1941",	"M4 R2", ""),
+        new RotorData("Gamma",              "FSOKANUERHMBTIYCWLQPZXVGJD",	"Spring 1942",	"M4 R2", ""),
 
     };
 
@@ -256,8 +258,6 @@ public class Model {
                 wheelList.add(id);
             }
         }
-
-        reflectorList.add(CONFIGURABLE);
     }
 
 
@@ -343,7 +343,6 @@ public class Model {
     public String getReflectorChoice()   { return reflectorChoice; }
     public void initReflectorChoice(String choice)   {
         reflectorChoice = choice;
-        reconfigurable = CONFIGURABLE.equals(reflectorChoice);
     }
 
     public void setReflectorChoice(String choice)   {
@@ -368,12 +367,27 @@ public class Model {
         reflector = buildNewReflector();
     }
 
+    public void setReconfigurable(boolean state) {
+        if (reconfigurable == state) {
+            return;
+        }
+
+        reconfigurable = state;
+        updateReflector();
+    }
+
     public boolean isReconfigurable() { return reconfigurable; }
 
     // Called by DataStore on start up.
     public void initPairText(ArrayList<String> links) {
         reflectorControl.setLinks(links);
     }
+
+    /**
+     * Construct a String represntation of the reflector Pair set.
+     * @return the String represntation.
+     */
+    public String getPairString()           { return reflectorControl.getPairString(); }
 
     public ArrayList<String> getPairText()  { return reflectorControl.getLinks(); }
     public boolean hasPairText()            { return reflectorControl.hasLinks(); }
@@ -507,6 +521,12 @@ public class Model {
         plugboardControl.setLinks(links);
     }
 
+    /**
+     * Construct a String represntation of the plugboard Pair set.
+     * @return the String represntation.
+     */
+    public String getPlugString()           { return plugboardControl.getPairString(); }
+
     public ArrayList<String> getPlugText()  { return plugboardControl.getLinks(); }
     public boolean hasPlugText()            { return plugboardControl.hasLinks(); }
 
@@ -532,7 +552,7 @@ public class Model {
      * Initialize "Plugboard Connections" panel.
      */
     private void initializePlugboardConnections() {
-        plugboardControl = new PairSelectControl(true, "Select Plugboard connections");
+        plugboardControl = new PairSelectControl(true, "Configure Plugboard connections");
     }
 
 

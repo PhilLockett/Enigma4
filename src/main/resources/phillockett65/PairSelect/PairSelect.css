@@ -1,17 +1,16 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 .root{
-    -fx-background-color: black;
+    -fx-background-color: #303030;
     -fx-border-color: silver;
 }
-.top-bar{
-    -fx-background-color: linear-gradient(to bottom, #505050, #303030);
-}
-.top-bar:hover{
-    -fx-background-color: linear-gradient(to bottom, #707070, #505050);
-}
 
-.top-bar-icon:hover{
-    -fx-background-color: red;
+.titled-pane{
+    -fx-text-fill: #e8e8e8;
+}
+.title{
+    -fx-background-color: #303030;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
 }
 
 .label {
@@ -43,12 +42,22 @@
     -fx-background-color: #e8e8e8;
 }
 
+.text-field:readonly{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: #505050;
+}
 .text-field{
     -fx-font-size: 14;
     -fx-font-weight: bold;
-    -fx-font-family: monospace;
     -fx-text-fill: black;
     -fx-background-color: #e8e8e8;
+}
+
+.content{
+    -fx-background-color: #080808;
+	-fx-border-color: white;
+	-fx-border-insets: 4;
 }
 
 .select-guide{
@@ -76,14 +85,14 @@
 }
 
 .select-button-selected{
-    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #FFFF00, #A0A000);
+    -fx-fill: radial-gradient(center 50% 50%, radius 80%, #60BB60, #00BB00);
 }
 
 .select-button-hover{
-    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #80FF80, #00FF00);
+    -fx-fill: radial-gradient(center 50% 50%, radius 100%, #88FF88, #00FF00);
 }
 
 .select-button-hoverused{
-    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #FF8080, #FF0000);
+    -fx-fill: radial-gradient(center 50% 50%, radius 80%, #FF6666, #FF0000);
 }
 

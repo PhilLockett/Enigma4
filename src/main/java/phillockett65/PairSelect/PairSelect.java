@@ -58,8 +58,9 @@ public class PairSelect extends AnchorPane {
     private static double radius = 150.0;
     private static double labelRadius = radius + 25.0;
 
+    private static double indent = 20.0;
     private static double colIndent = 40.0;
-    private static double rowIndent = 40.0;
+    private static double rowIndent = 50.0;
     private static double colStep = 40.0;
     private static double rowStep = 100.0;
 
@@ -89,7 +90,7 @@ public class PairSelect extends AnchorPane {
 
     public double getMyWidth() { return xCentre * 2; }
     public double getMyHeight() { 
-        return isPlugboard() ? (rowStep * 3) : (yCentre * 2) + rowIndent; 
+        return isPlugboard() ? (rowStep * 3) : (yCentre * 2) + indent; 
     }
 
     public static final int STEPS = 13;
@@ -393,7 +394,8 @@ public class PairSelect extends AnchorPane {
         }
     }
 
-    private void init() {
+    private void init(boolean isPlugboard) {
+        plugboard = isPlugboard;
 
         pairList = new ArrayList<Connect>();
         buttons = new ArrayList<Plug>();
@@ -428,8 +430,8 @@ public class PairSelect extends AnchorPane {
 
         });
 
-        setPrefWidth(getMyWidth());
-        setPrefHeight(getMyHeight());
+        this.setPrefWidth(getMyWidth());
+        this.setPrefHeight(getMyHeight());
     }
 
 
@@ -506,21 +508,21 @@ public class PairSelect extends AnchorPane {
      */
     public PairSelect(boolean isPlugboard) {
         super();
-        plugboard = isPlugboard;
-        init();
+        init(isPlugboard);
     }
 
 
 
-    /**
+    /************************************************************************
      * PairSelect Event class.
      */
+
     public static class PairEvent extends Event {
 
         private static final long serialVersionUID = 202408191851L;
     
         /**
-         * The only valid EventTypes for the SelectEvent.
+         * The only valid EventTypes for the PairEvent.
          */
         public static final EventType<PairEvent> SELECT_LINK =
             new EventType<>(Event.ANY, "SELECT_LINK");

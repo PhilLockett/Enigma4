@@ -129,7 +129,8 @@ class Plug extends Circle {
         this.setRadius(buttonSize);
         this.setFill(unusedCol);
         this.getStyleClass().add(BUTTONCOL);
-        this.setStrokeWidth(0.0);
+        this.setStrokeWidth(2.0);
+        this.setStroke(Color.SILVER);
         
         used = false;
         this.setId(label);

@@ -26,23 +26,22 @@ package phillockett65.PairSelect;
 
 import java.util.ArrayList;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
+import phillockett65.Enigma.ButtonControl;
+import phillockett65.Enigma.ButtonControl.ButtonEvent;
+import phillockett65.Enigma.Model;
 import phillockett65.PairSelect.PairSelect.PairEvent;
 
 /**
@@ -51,54 +50,43 @@ import phillockett65.PairSelect.PairSelect.PairEvent;
  */
 public class PairSelectControl extends Stage {
 
-    private static final String TOPBARICON = "top-bar-icon";
 
     private Scene scene;
+    private Model model;
 
     private VBox root;
-    private Label heading;
+    private TitledPane pane;
     private PairSelect pairSelect;
     private TextField field;
 
-    private Button done;
-    private Button clear;
-
-    private double x = 0.0;
-    private double y = 0.0;
+    private ButtonControl clearControl;
+    private ButtonControl abortControl;
+    private ButtonControl doneControl;
 
     private boolean plugboard = false;
     private boolean result = false;
-    private boolean positioned = false;
 
-    private static final double ERRPOS = -200.0;
 
-    /**
-     * Set the position of the window.
-     * @param x co-ordinate.
-     * @param y co-ordinate.
-     */
-    public void setPos(double x, double y) {
-        if ((x == ERRPOS) && (y == ERRPOS)) {
-            return;
-        }
-
-        positioned = true;
+    private void setPos() {
+        final double dw = (model.getMainWidth() - this.getWidth()) / 2.0;
+        final double x = model.getMainXPos() + dw;
         this.setX(x);
+
+        final double y = model.getMainYPos() + 32.0;
         this.setY(y);
     }
-    public double getXPos() { if (positioned) return this.getX(); return ERRPOS; }
-    public double getYPos() { if (positioned) return this.getY(); return ERRPOS; }
 
     private void syncDoneButton() {
         boolean disabled = !plugboard;
         if (!plugboard) {
             disabled = pairSelect.size() < 12;
         }
-        done.setDisable(disabled);
+        doneControl.setDisable(disabled);
     }
 
+
     private void syncPairs() {
-        field.setText(pairSelect.getPairString());
+        field.setText(getPairString());
     }
 
     private void syncUI() {
@@ -107,74 +95,6 @@ public class PairSelectControl extends Stage {
     }
 
 
-    /**
-     * Builds the cancel button as a Pane and includes the mouse click handler.
-     * @return the Pane that represents the cancel button.
-     */
-    private Pane buildCancel() {
-        final double cancelPadding = 0.3;
-        final double iconSize = 28.0;
-    
-        Pane cancel = new Pane();
-        cancel.setPrefWidth(iconSize);
-        cancel.setPrefHeight(iconSize);
-        cancel.getStyleClass().add(TOPBARICON);
-
-        double a = iconSize * cancelPadding;
-        double b = iconSize - a;
-        Line line1 = new Line(a, a, b, b);
-        line1.setStroke(Color.WHITE);
-        line1.setStrokeWidth(4.0);
-        line1.setStrokeLineCap(StrokeLineCap.ROUND);
-
-        Line line2 = new Line(a, b, b, a);
-        line2.setStroke(Color.WHITE);
-        line2.setStrokeWidth(4.0);
-        line2.setStrokeLineCap(StrokeLineCap.ROUND);
-
-        cancel.getChildren().addAll(line1, line2);
-
-        cancel.setOnMouseClicked(event -> {
-            restoreSnapshot();
-            result = false;
-            close();
-        });
-
-        return cancel;
-    }
-
-    /**
-     * Builds the top-bar as a HBox and includes the cancel button the mouse 
-     * press and drag handlers.
-     * @return the HBox that represents the top-bar.
-     */
-    private HBox buildTopBar() {
-        HBox topBar = new HBox();
-        topBar.getStyleClass().add("top-bar");
-
-        // Make window dragable.
-        topBar.setOnMousePressed(mouseEvent -> {
-            x = mouseEvent.getSceneX();
-            y = mouseEvent.getSceneY();
-        });
-
-        topBar.setOnMouseDragged(mouseEvent -> {
-            this.setX(mouseEvent.getScreenX() - x);
-            this.setY(mouseEvent.getScreenY() - y);
-        });
-
-        heading = new Label();
-        Region region = new Region();
-
-
-        topBar.getChildren().add(heading);
-        topBar.getChildren().add(region);
-        HBox.setHgrow(region, Priority.ALWAYS);
-        topBar.getChildren().add(buildCancel());
-
-
-        return topBar;
-    }
 
     /**
      * Builds the options buttons as a HBox and includes the action event 
@@ -183,32 +103,52 @@ public class PairSelectControl extends Stage {
      */
     private HBox buildOptions() {
         HBox options = new HBox();
+        options.setSpacing(20.0);
 
-        done = new Button("Done");
+        clearControl = new ButtonControl("Clear", false);
         Region region = new Region();
-        clear = new Button("Clear");
-    
-        done.setOnAction(event -> {
-            result = true;
-            close();
-        });
+        abortControl = new ButtonControl("Abort", true);
+        doneControl = new ButtonControl("Accept", true);
+        
+        clearControl.addEventFilter(ButtonEvent.ANY, this::handleClearEvent);
+        abortControl.addEventFilter(ButtonEvent.ANY, this::handleAbortEvent);
+        doneControl.addEventFilter(ButtonEvent.ANY, this::handleDoneEvent);
 
-        clear.setOnAction(event -> {
-            clear();
-            syncUI();
-        });
+        clearControl.setTooltip("Click to delete all entered pairs");
+        abortControl.setTooltip("Click to discard changes and exit");
+        doneControl.setTooltip("Click when all pairs have been entered");
 
-        done.setTooltip(new Tooltip("Click when all pairs have been entered"));
-        clear.setTooltip(new Tooltip("Click to delete all entered pairs"));
-
-        options.getChildren().add(clear);
+        options.getChildren().add(clearControl);
         options.getChildren().add(region);
         HBox.setHgrow(region, Priority.ALWAYS);
-        options.getChildren().add(done);
+        options.getChildren().add(abortControl);
+        options.getChildren().add(doneControl);
 
         return options;
     }
 
+    private void handleClearEvent(ButtonEvent event) {
+        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+            clear();
+            syncUI();
+        }
+    }
+ 
+    private void handleAbortEvent(ButtonEvent event) {
+        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+            restoreSnapshot();
+            result = false;
+            close();
+        }
+    }
+ 
+    private void handleDoneEvent(ButtonEvent event) {
+        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+            result = true;
+            close();
+        }
+    }
+ 
     /**
      * Builds the selected pairs display as a HBox.
      * @return the HBox that represents the selected pairs display.
@@ -245,17 +185,27 @@ public class PairSelectControl extends Stage {
         return panel;
     }
 
-    private void init() {
+    private void init(boolean isPlugboard, String title) {
+        model = Model.getInstance();
+        plugboard = isPlugboard;
+
         this.resizableProperty().setValue(false);
         this.initStyle(StageStyle.UNDECORATED);
         this.initModality(Modality.APPLICATION_MODAL);
 
+        this.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                setPos();
+            }
+        });
+
+        pane = new TitledPane(title, buildControlPanel());
+        pane.setCollapsible(false);
+        
         root = new VBox();
-
-        root.addEventHandler(PairEvent.LINK_CHANGE, this::handleSelectEvent);
-
-        root.getChildren().add(buildTopBar());
-        root.getChildren().add(buildControlPanel());
+        root.addEventHandler(PairEvent.LINK_CHANGE, event -> syncUI());
+        root.getChildren().add(pane);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
@@ -263,8 +213,13 @@ public class PairSelectControl extends Stage {
         this.setScene(scene);
     }
 
-    public void handleSelectEvent(PairEvent event) {
-        syncUI();
+
+    /**
+     * Construct a String represntation of the Pair set.
+     * @return the String represntation.
+     */
+    public String getPairString() {
+        return pairSelect.getPairString();
     }
 
     public ArrayList<String> getLinks() { return pairSelect.getLinks(); }
@@ -275,7 +230,6 @@ public class PairSelectControl extends Stage {
     public boolean isValid() { return pairSelect.isValid(); }
     public void clear() { pairSelect.clear(); }
     public void setLinks(ArrayList<String> links) { pairSelect.setLinks(links); }
-    public void setHeading(String title) { heading.setText(" " + title); }
 
     /**
      * Fabricate default pair values.
@@ -310,10 +264,7 @@ public class PairSelectControl extends Stage {
      */
     public PairSelectControl(boolean isPlugboard, String title) {
         super();
-        plugboard = isPlugboard;
-        init();
-
-        setHeading(title);
+        init(isPlugboard, title);
     }
 
 
@@ -322,7 +273,6 @@ public class PairSelectControl extends Stage {
      * @return true if the control was updated, false if cancelled.
      */
     public boolean showControl() {
-        positioned = true;
         takeSnapshot();
         syncUI();
         this.showAndWait();

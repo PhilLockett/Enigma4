@@ -3,15 +3,15 @@
     -fx-background-color: #303030;
 }
 .label{
-    -fx-text-fill: #a8a8a8;
+    -fx-text-fill: #999999;
     -fx-font-weight: bold;
 }
 
 .myswitch-selected {
-    -fx-text-fill: #e8e8e8;
+    -fx-text-fill: #cccccc;
 }
 
 .myswitch-hover {
-    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
 }
 

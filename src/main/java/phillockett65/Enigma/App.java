@@ -68,7 +68,7 @@ public class App extends Application {
             @Override
             public void handle(KeyEvent event) {
                 final KeyCode keyCode = event.getCode();
-                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_PRESSED, " + keyCode + ", " + event.getCharacter() + ").");
+                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_PRESSED, '" + keyCode + "')");
                 if (keyCode.isLetterKey())
                     controller.keyPress(keyCode);
             }
@@ -78,7 +78,7 @@ public class App extends Application {
             @Override
             public void handle(KeyEvent event) {
                 final KeyCode keyCode = event.getCode();
-                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_RELEASED, " + keyCode + ", " + event.getCharacter() + ").");
+                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_RELEASED, '" + keyCode + "')");
                 if (keyCode.isLetterKey())
                     controller.keyRelease(keyCode);
             }

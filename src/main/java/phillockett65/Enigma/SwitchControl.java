@@ -51,12 +51,13 @@ public class SwitchControl extends HBox {
     private static final Paint TRACK = Color.SILVER;
     private static final Paint TRACKHOVER = Color.WHITE;
 
+    private Model model;
     private int id = 0;
     private boolean state = false;
 
     private Rectangle track;
     private Rectangle thumb;
-    private Label switchLabel;
+    private Label label;
 
     // Dimensions for the track and thumb.
     private final double h = 22.0;
@@ -66,9 +67,6 @@ public class SwitchControl extends HBox {
     private final double x = b;
     private final double dist = w - (x + b + s);
     private final double y = b;
-    private final double p;
-    private final double a1;
-    private final double a2;
 
     private final Duration duration = Duration.millis(100);
 
@@ -89,7 +87,7 @@ public class SwitchControl extends HBox {
     }
 
     private void syncUI() {
-        setStyleClass(state, switchLabel, SELECTED);
+        setStyleClass(state, label, SELECTED);
 
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(thumb);
@@ -109,7 +107,7 @@ public class SwitchControl extends HBox {
     }
 
     private void hoverSwitch(boolean hovering) {
-        setStyleClass(hovering, switchLabel, HOVER);
+        setStyleClass(hovering, label, HOVER);
         if (hovering) {
             track.setStroke(TRACKHOVER);
         } else {
@@ -122,8 +120,9 @@ public class SwitchControl extends HBox {
      * Public interface.
      */
 
-    public void setTooltip(String tip) {
-        switchLabel.setTooltip(new Tooltip(tip));
+    public void setTooltip(String label) {
+        Tooltip tip = new Tooltip(label);
+        Tooltip.install(this, tip);
     }
 
     public void setSelected(boolean newState) {
@@ -142,18 +141,14 @@ public class SwitchControl extends HBox {
 
     /**
      * Constructor.
-     * @param text string for its label.
-     * @param roundness of corners, 0.0 = square, 1.0 = round.
+     * @param text string for the label.
+     * @param labelLeft true if label should be left of the switch, false for right.
      */
-    public SwitchControl(String text, double roundness) {
+    public SwitchControl(String text, boolean labelLeft) {
         super();
+        model = Model.getInstance();
 
-        if (roundness < 0.0) roundness = 0.0;
-        if (roundness > 1.0) roundness = 1.0;
-        p = roundness;
-        a1 = h * p;
-        a2 = s * p;
-
+        this.setSpacing(model.getSeparation());
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Build the track.
@@ -163,6 +158,10 @@ public class SwitchControl extends HBox {
             new Stop(1, Color.web("#888"))
         };
         LinearGradient trackLG = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, trackStops);
+
+        final double p = model.getRoundness();
+        final double a1 = h * p;
+        final double a2 = s * p;
 
         track.setStrokeWidth(2.0);
         track.setStroke(TRACK);
@@ -182,14 +181,18 @@ public class SwitchControl extends HBox {
         thumb.setArcWidth(a2);
         thumb.setArcHeight(a2);
 
-        // Build the label.
-        switchLabel = new Label(" " + text);
-        switchLabel.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
-        
         // Group track and thumb together.
         Group group = new Group(track, thumb);
 
-        this.getChildren().addAll(group, switchLabel);
+        // Build the label.
+        label = new Label(text);
+        label.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
+        if (labelLeft) {
+            this.getChildren().addAll(label, group);
+        } else {
+            this.getChildren().addAll(group, label);
+        }
+
         this.setOnMouseClicked(event -> toggleSwitch());
         this.setOnMouseEntered(event -> hoverSwitch(true));
         this.setOnMouseExited(event -> hoverSwitch(false));
