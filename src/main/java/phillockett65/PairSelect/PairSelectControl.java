@@ -108,7 +108,7 @@ public class PairSelectControl extends Stage {
         clearControl = new ButtonControl("Clear", false);
         Region region = new Region();
         abortControl = new ButtonControl("Abort", true);
-        doneControl = new ButtonControl("Accept", true);
+        doneControl = new ButtonControl("Apply", true);
         
         clearControl.addEventFilter(ButtonEvent.ANY, this::handleClearEvent);
         abortControl.addEventFilter(ButtonEvent.ANY, this::handleAbortEvent);
@@ -116,7 +116,7 @@ public class PairSelectControl extends Stage {
 
         clearControl.setTooltip("Click to delete all entered pairs");
         abortControl.setTooltip("Click to discard changes and exit");
-        doneControl.setTooltip("Click when all pairs have been entered");
+        doneControl.setTooltip("Click when all connections have been entered");
 
         options.getChildren().add(clearControl);
         options.getChildren().add(region);
@@ -223,11 +223,7 @@ public class PairSelectControl extends Stage {
     }
 
     public ArrayList<String> getLinks() { return pairSelect.getLinks(); }
-    public String getText(int index) { return pairSelect.getText(index); }
-    public int size() { return pairSelect.size(); }
-    public boolean hasLinks() { return pairSelect.hasPairs(); }
     public int[] getMap() { return pairSelect.getMap(); }
-    public boolean isValid() { return pairSelect.isValid(); }
     public void clear() { pairSelect.clear(); }
     public void setLinks(ArrayList<String> links) { pairSelect.setLinks(links); }
 

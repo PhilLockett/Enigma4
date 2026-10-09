@@ -89,7 +89,7 @@ public class DataStore1 extends DataStore {
         reflectorChoice = model.getReflectorChoice();
         reconfigurable = model.isReconfigurable();
 
-        pairs = model.getPairText();
+        pairs = model.getPairList();
 
         fourthWheel = model.isFourthWheel();
         show = model.isShow();
@@ -101,7 +101,7 @@ public class DataStore1 extends DataStore {
             rotorOffsets.add(model.getRotorIndex(i));
         }
 
-        plugs = model.getPlugText();
+        plugs = model.getPlugList();
 
         return success;
     }
@@ -120,7 +120,7 @@ public class DataStore1 extends DataStore {
         model.initReflectorChoice(reflectorChoice);
         model.setReconfigurable(reconfigurable);
 
-        model.initPairText(pairs);
+        model.initPairList(pairs);
 
         model.initFourthWheel(fourthWheel);
         model.setShow(show);
@@ -130,7 +130,7 @@ public class DataStore1 extends DataStore {
             model.setRotorState(i, wheels.get(i), ringSettings.get(i), rotorOffsets.get(i));
         }
 
-        model.initPlugText(plugs);
+        model.initPlugList(plugs);
 
         return success;
     }

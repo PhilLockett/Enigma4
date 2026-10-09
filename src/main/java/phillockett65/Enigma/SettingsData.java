@@ -45,7 +45,7 @@ public class SettingsData {
         ArrayList<String> list = Mapper.splitWords(wheels);
         final int max = list.size();
 
-        output[0] = "I";
+        output[0] = "Beta";
         for (int rotor = 0; rotor < max; ++rotor) {
             output[rotor+1] = list.get(rotor);
         }

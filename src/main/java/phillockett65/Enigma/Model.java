@@ -76,8 +76,6 @@ public class Model {
      * General support code.
      */
 
-    private int idToIndex(String id) { return Integer.valueOf(id); }
-
 
 
     /************************************************************************
@@ -144,7 +142,7 @@ public class Model {
         reflectorControl.defaultSettings();
 
         initFourthWheel(false);
-        setRotorState(SLOW, "I", 0, 0);
+        setRotorState(SLOW, "Beta", 0, 0);
         setRotorState(LEFT, "IV", 14, 11);
         setRotorState(MIDDLE, "II", 22, 18);
         setRotorState(RIGHT, "V", 25, 0);
@@ -159,7 +157,7 @@ public class Model {
         SettingsData settings = keyList649[date];
 
         ArrayList<String> list = Mapper.splitWords(settings.getReflector());
-        initPairText(list);
+        initPairList(list);
         setReconfigurable(true);
         updateReflector();
  
@@ -170,7 +168,7 @@ public class Model {
         }
 
         list = Mapper.splitWords(settings.getPlugboard());
-        initPlugText(list);
+        initPlugList(list);
         updatePlugboard();
     }
 
@@ -379,25 +377,17 @@ public class Model {
     public boolean isReconfigurable() { return reconfigurable; }
 
     // Called by DataStore on start up.
-    public void initPairText(ArrayList<String> links) {
+    public void initPairList(ArrayList<String> links) {
         reflectorControl.setLinks(links);
     }
 
     /**
-     * Construct a String represntation of the reflector Pair set.
-     * @return the String represntation.
+     * Construct a String representation of the reflector Pair set.
+     * @return the String representation.
      */
     public String getPairString()           { return reflectorControl.getPairString(); }
 
-    public ArrayList<String> getPairText()  { return reflectorControl.getLinks(); }
-    public boolean hasPairText()            { return reflectorControl.hasLinks(); }
-
-    public int getPairCount()               { return reflectorControl.size(); }
-    public String getPairText(int index)	{ return reflectorControl.getText(index); }
-    public int getPairCount(int index)		{ return getPairText(index).length(); }
-
-    public String getPairText(String id)	{ return getPairText(idToIndex(id)); }
-    public int getPairCount(String id)		{ return getPairCount(idToIndex(id)); }
+    public ArrayList<String> getPairList()  { return reflectorControl.getLinks(); }
 
     public boolean launchReflector() {
         if (reflectorControl.showControl()) {
@@ -517,25 +507,17 @@ public class Model {
     }
 
     // Called by DataStore on start up.
-    public void initPlugText(ArrayList<String> links) {
+    public void initPlugList(ArrayList<String> links) {
         plugboardControl.setLinks(links);
     }
 
     /**
-     * Construct a String represntation of the plugboard Pair set.
-     * @return the String represntation.
+     * Construct a String representation of the plugboard Pair set.
+     * @return the String representation.
      */
     public String getPlugString()           { return plugboardControl.getPairString(); }
 
-    public ArrayList<String> getPlugText()  { return plugboardControl.getLinks(); }
-    public boolean hasPlugText()            { return plugboardControl.hasLinks(); }
-
-    public int getPlugCount()               { return plugboardControl.size(); }
-    public String getPlugText(int index)	{ return plugboardControl.getText(index); }
-    public int getPlugCount(int index)		{ return getPlugText(index).length(); }
-
-    public String getPlugText(String id)	{ return getPlugText(idToIndex(id)); }
-    public int getPlugCount(String id)		{ return getPlugCount(idToIndex(id)); }
+    public ArrayList<String> getPlugList()  { return plugboardControl.getLinks(); }
 
     public boolean launchPlugboard() {
         if (plugboardControl.showControl()) {

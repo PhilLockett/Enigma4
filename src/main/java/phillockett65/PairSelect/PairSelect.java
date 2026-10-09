@@ -120,9 +120,8 @@ public class PairSelect extends AnchorPane {
 
     public static int stringToIndex(String s) { return Character.isDigit(s.charAt(0)) ? numberToIndex(s) : letterToIndex(s); }
 
-    public boolean hasPairs() { return !pairList.isEmpty(); }
     public int size() { return pairList.size(); }
-    public String getText(int index) { return index < size() ? pairList.get(index).get() : ""; }
+    private String getText(int index) { return index < size() ? pairList.get(index).get() : ""; }
 
     public boolean isPlugboard() { return plugboard; }
     public boolean isReflector() { return !isPlugboard(); }
@@ -328,7 +327,7 @@ public class PairSelect extends AnchorPane {
      * Determine if the reflector (or plugboard) is valid.
      * @return true if the reflector is valid, false otherwise.
      */
-    public boolean isValid() {
+    private boolean isValid() {
         // Check we have only 1 unconfigured pair.
         if ((isReflector()) && (pairList.size() < PAIR_COUNT)) {
             return false;
