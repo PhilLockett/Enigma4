@@ -272,7 +272,7 @@ public class PrimaryController {
             setReconfigurable();
         });
 
-        configureControl = new SwitchControl("Configure", false);
+        configureControl = new SwitchControl("Configure", true);
         configureControl.addEventFilter(SwitchEvent.ANY, this::handleConfigureEvent);
         configureControl.setTooltip("Select to use a configurable Reflector");
 
@@ -282,11 +282,11 @@ public class PrimaryController {
         reflectorEditControl.addEventFilter(ButtonEvent.ANY, this::handleReflectorEditEvent);
         reflectorEditControl.setTooltip("Edit the configurable Reflector");
 
+        reflectorHBox.getChildren().add(reflectorEditControl);
+
         pairList.setTooltip(new Tooltip("Current Reflector configuration"));
 
-        reflectorHBox.getChildren().add(reflectorEditControl);
         displayPairs();
-
         setReconfigurable();
     }
 
@@ -333,12 +333,11 @@ public class PrimaryController {
 
         fourthWheelControl = new SwitchControl("Use Fourth Rotor", false);
         fourthWheelControl.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
+        fourthWheelControl.setTooltip("Select to use a fourth Rotor");
 
         fourthWheelHBox.getChildren().add(fourthWheelControl);
 
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
-
-        fourthWheelControl.setTooltip("Select to use a fourth Rotor");
     }
 
     private void handleFourthWheelEvent(SwitchEvent event) {
