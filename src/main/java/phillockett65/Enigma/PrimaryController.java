@@ -47,8 +47,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 import phillockett65.Debug.Debug;
-import phillockett65.Enigma.ButtonControl.ButtonEvent;
-import phillockett65.Enigma.SwitchControl.SwitchEvent;
+import phillockett65.Enigma.CustomControl.ControlEvent;
 
 public class PrimaryController {
 
@@ -272,14 +271,14 @@ public class PrimaryController {
             setReconfigurable();
         });
 
-        configureControl = new SwitchControl("Configure", true);
-        configureControl.addEventFilter(SwitchEvent.ANY, this::handleConfigureEvent);
+        configureControl = new SwitchControl("Use Configurable Reflector", true);
+        configureControl.addEventFilter(ControlEvent.ANY, this::handleConfigureEvent);
         configureControl.setTooltip("Select to use a configurable Reflector");
 
         configureHBox.getChildren().add(configureControl);
 
         reflectorEditControl = new ButtonControl("Edit", true);
-        reflectorEditControl.addEventFilter(ButtonEvent.ANY, this::handleReflectorEditEvent);
+        reflectorEditControl.addEventFilter(ControlEvent.ANY, this::handleReflectorEditEvent);
         reflectorEditControl.setTooltip("Edit the configurable Reflector");
 
         reflectorHBox.getChildren().add(reflectorEditControl);
@@ -290,20 +289,20 @@ public class PrimaryController {
         setReconfigurable();
     }
 
-    private void handleReflectorEditEvent(ButtonEvent event) {
+    private void handleReflectorEditEvent(ControlEvent event) {
         Debug.trace(DD, "handleReflectorEditEvent()");
 
-        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+        if (event.getEventType() == ControlEvent.CONTROL_PRESSED) {
             if (model.launchReflector()) {
                 displayPairs();
             }
         }
     }
 
-    private void handleConfigureEvent(SwitchEvent event) {
+    private void handleConfigureEvent(ControlEvent event) {
         Debug.trace(DD, "handleConfigureEvent() " + event.isOn());
 
-        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+        if (event.getEventType() == ControlEvent.CONTROL_TOGGLED) {
             model.setReconfigurable(event.isOn());
             setReconfigurable();
         }
@@ -332,7 +331,7 @@ public class PrimaryController {
         // rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
 
         fourthWheelControl = new SwitchControl("Use Fourth Rotor", false);
-        fourthWheelControl.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
+        fourthWheelControl.addEventFilter(ControlEvent.ANY, this::handleFourthWheelEvent);
         fourthWheelControl.setTooltip("Select to use a fourth Rotor");
 
         fourthWheelHBox.getChildren().add(fourthWheelControl);
@@ -340,10 +339,10 @@ public class PrimaryController {
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
     }
 
-    private void handleFourthWheelEvent(SwitchEvent event) {
+    private void handleFourthWheelEvent(ControlEvent event) {
         Debug.trace(DD, "handleFourthWheelEvent() " + event.isOn());
 
-        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+        if (event.getEventType() == ControlEvent.CONTROL_TOGGLED) {
             model.setFourthWheel(event.isOn());
         }
     }
@@ -376,7 +375,7 @@ public class PrimaryController {
         // plugboardConnectionsTitledPane.setTooltip(new Tooltip("Configure the Plugboard using unique wiring pairs"));
 
         plugboardEditControl = new ButtonControl("Edit", true);
-        plugboardEditControl.addEventFilter(ButtonEvent.ANY, this::handlePlugboardEditEvent);
+        plugboardEditControl.addEventFilter(ControlEvent.ANY, this::handlePlugboardEditEvent);
         plugboardEditControl.setTooltip("Edit the Plugboard");
 
         plugboardHBox.getChildren().add(plugboardEditControl);
@@ -386,10 +385,10 @@ public class PrimaryController {
         displayPlugs();
     }
 
-    private void handlePlugboardEditEvent(ButtonEvent event) {
+    private void handlePlugboardEditEvent(ControlEvent event) {
         Debug.trace(DD, "handlePlugboardEditEvent()");
 
-        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+        if (event.getEventType() == ControlEvent.CONTROL_PRESSED) {
             if (model.launchPlugboard()) {
                 displayPlugs();
             }
@@ -429,7 +428,7 @@ public class PrimaryController {
      */
     private void initializeEncipher() {
         showStepsControl = new SwitchControl("Show Translation", false);
-        showStepsControl.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
+        showStepsControl.addEventFilter(ControlEvent.ANY, this::handleShowStepsEvent);
         showStepsControl.setTooltip("Select to show each translation step on the command line");
 
         showStepsHBox.getChildren().add(showStepsControl);
@@ -481,10 +480,10 @@ public class PrimaryController {
         }
     }
 
-    private void handleShowStepsEvent(SwitchEvent event) {
+    private void handleShowStepsEvent(ControlEvent event) {
         Debug.trace(DD, "handleShowStepsEvent() " + event.isOn());
 
-        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+        if (event.getEventType() == ControlEvent.CONTROL_TOGGLED) {
             model.setShow(event.isOn());
         }
     }

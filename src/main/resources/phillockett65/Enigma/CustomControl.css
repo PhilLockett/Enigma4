@@ -7,11 +7,11 @@
     -fx-font-weight: bold;
 }
 
-.myswitch-selected {
+.control-selected {
     -fx-text-fill: #cccccc;
 }
 
-.myswitch-hover {
+.control-hover {
     -fx-text-fill: #ffffff;
 }
 

@@ -31,6 +31,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -40,7 +42,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import phillockett65.Enigma.ButtonControl;
-import phillockett65.Enigma.ButtonControl.ButtonEvent;
+import phillockett65.Enigma.CustomControl.ControlEvent;
 import phillockett65.Enigma.Model;
 import phillockett65.PairSelect.PairSelect.PairEvent;
 
@@ -110,9 +112,9 @@ public class PairSelectControl extends Stage {
         abortControl = new ButtonControl("Abort", true);
         doneControl = new ButtonControl("Apply", true);
         
-        clearControl.addEventFilter(ButtonEvent.ANY, this::handleClearEvent);
-        abortControl.addEventFilter(ButtonEvent.ANY, this::handleAbortEvent);
-        doneControl.addEventFilter(ButtonEvent.ANY, this::handleDoneEvent);
+        clearControl.addEventFilter(ControlEvent.ANY, this::handleClearEvent);
+        abortControl.addEventFilter(ControlEvent.ANY, this::handleAbortEvent);
+        doneControl.addEventFilter(ControlEvent.ANY, this::handleDoneEvent);
 
         clearControl.setTooltip("Click to delete all entered pairs");
         abortControl.setTooltip("Click to discard changes and exit");
@@ -127,23 +129,23 @@ public class PairSelectControl extends Stage {
         return options;
     }
 
-    private void handleClearEvent(ButtonEvent event) {
-        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+    private void handleClearEvent(ControlEvent event) {
+        if (event.getEventType() == ControlEvent.CONTROL_PRESSED) {
             clear();
             syncUI();
         }
     }
  
-    private void handleAbortEvent(ButtonEvent event) {
-        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+    private void handleAbortEvent(ControlEvent event) {
+        if (event.getEventType() == ControlEvent.CONTROL_PRESSED) {
             restoreSnapshot();
             result = false;
             close();
         }
     }
  
-    private void handleDoneEvent(ButtonEvent event) {
-        if (event.getEventType() == ButtonEvent.BUTTON_PRESSED) {
+    private void handleDoneEvent(ControlEvent event) {
+        if (event.getEventType() == ControlEvent.CONTROL_PRESSED) {
             result = true;
             close();
         }
@@ -209,6 +211,14 @@ public class PairSelectControl extends Stage {
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
+
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                restoreSnapshot();
+                result = false;
+                close();
+            }
+        });
 
         this.setScene(scene);
     }
