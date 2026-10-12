@@ -30,6 +30,7 @@
 package phillockett65.Enigma;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -111,6 +112,10 @@ public class PrimaryController {
         }
 
         headingLabel.setText(model.getTitle());
+
+        Scene scene = stage.getScene();
+        scene.setOnKeyPressed(event -> keyPress(event.getCode()));
+        scene.setOnKeyReleased(event -> keyRelease(event.getCode()));
     }
 
     /**
@@ -454,10 +459,14 @@ public class PrimaryController {
 
 
     /**
-     * Called by the Application when a new key is pressed.
-     * @param keyCode key to be processed
+     * Called by the scene when a key is pressed.
+     * @param keyCode to be processed
      */
-    public void keyPress(KeyCode keyCode) {
+    private void keyPress(KeyCode keyCode) {
+        if (keyCode.isLetterKey() == false) {
+            return;
+        }
+
         if (currentKey == -1) {
             currentKey = Mapper.letterToIndex(keyCode.getChar());
             final int index = model.translate(currentKey);
@@ -468,10 +477,14 @@ public class PrimaryController {
     }
 
     /**
-     * Called by the Application when a current key is released.
-     * @param keyCode key to be processed
+     * Called by the scene when a key is released.
+     * @param keyCode to be processed
      */
-    public void keyRelease(KeyCode keyCode) {
+    private void keyRelease(KeyCode keyCode) {
+        if (keyCode.isLetterKey() == false) {
+            return;
+        }
+
         final int index = Mapper.letterToIndex(keyCode.getChar());
         if (currentKey == index) {
             currentKey = -1;

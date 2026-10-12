@@ -25,15 +25,11 @@ package phillockett65.Enigma;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import phillockett65.Debug.Debug;
 
 import java.io.IOException;
 
@@ -41,9 +37,6 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-
-    // Debug delta used to adjust the local logging level.
-    private static final int DD = 0;
 
     PrimaryController controller;
 
@@ -63,26 +56,6 @@ public class App extends Application {
         stage.setScene(scene);
 
         controller = fxmlLoader.getController();
-
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                final KeyCode keyCode = event.getCode();
-                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_PRESSED, '" + keyCode + "')");
-                if (keyCode.isLetterKey())
-                    controller.keyPress(keyCode);
-            }
-        });
-
-        stage.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                final KeyCode keyCode = event.getCode();
-                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_RELEASED, '" + keyCode + "')");
-                if (keyCode.isLetterKey())
-                    controller.keyRelease(keyCode);
-            }
-        });
 
         stage.show();
 
