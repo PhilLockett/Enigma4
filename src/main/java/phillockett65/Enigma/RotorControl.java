@@ -24,7 +24,6 @@
  */
 package phillockett65.Enigma;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -35,8 +34,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
-import phillockett65.Debug.Debug;
 
+import phillockett65.Debug.Debug;
 
 public class RotorControl extends VBox {
 

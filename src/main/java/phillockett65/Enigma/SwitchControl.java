@@ -56,11 +56,9 @@ public class SwitchControl extends CustomControl {
 
     @Override
     public void setSelected(boolean newState) {
-        if (newState == state) {
-            return;
+        if (newState != state) {
+            toggleSwitch();
         }
-
-        toggleSwitch();
     }
 
 

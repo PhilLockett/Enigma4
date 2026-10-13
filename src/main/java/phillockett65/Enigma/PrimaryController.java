@@ -47,6 +47,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
+
 import phillockett65.Debug.Debug;
 import phillockett65.Enigma.CustomControl.ControlEvent;
 

@@ -29,6 +29,7 @@ package phillockett65.Enigma;
 import java.util.Arrays;
 
 import javafx.util.Pair;
+
 import phillockett65.Debug.Debug;
 
 public class Rotor extends Mapper {

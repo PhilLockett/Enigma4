@@ -32,7 +32,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -41,6 +40,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+
 import phillockett65.Enigma.ButtonControl;
 import phillockett65.Enigma.CustomControl.ControlEvent;
 import phillockett65.Enigma.Model;

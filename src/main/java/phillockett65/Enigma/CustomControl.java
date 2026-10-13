@@ -97,11 +97,11 @@ public class CustomControl extends HBox {
      */
 
     protected int id = 0;
+    protected boolean state = false;
 
     public void setIdent(int ident) { id = ident; }
     public int getIdent() { return id; }
 
-    protected boolean state = false;
     public void setSelected(boolean newState) { state = newState; }
     public boolean isSelected() { return state; }
 

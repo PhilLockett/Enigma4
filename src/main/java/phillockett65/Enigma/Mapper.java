@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javafx.util.Pair;
+
 import phillockett65.Debug.Debug;
 
 public class Mapper {

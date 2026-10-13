@@ -31,6 +31,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
 import phillockett65.Debug.Debug;
 import phillockett65.Enigma.RotorControl.RotorEvent;
 import phillockett65.PairSelect.PairSelectControl;

@@ -24,7 +24,6 @@
  */
 package phillockett65.PairSelect;
 
-
 import java.util.ArrayList;
 
 import javafx.event.Event;
@@ -37,6 +36,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
+
 import phillockett65.Debug.Debug;
 
 
