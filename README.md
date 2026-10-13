@@ -54,17 +54,18 @@ If successful `Enigma4` should appear similar to the following:
 ### General
 Settings and states will be persisted from one session to the next.
 All settings are saved to `Settings.ser` file on shutdown.
-The next time `Enigma4` is executed, these settings are loaded ready to continue 
-from where it left off.
+The next time `Enigma4` is executed, these settings are loaded ready to 
+continue from where it left off.
 
 ### Reflector Set-Up
 The `Reflector Set-Up` pane enables either a fixed reflector or a configurable 
-reflector to be used depending on the state of the `Configure` toggle switch.
-With the `Configure` toggle switch disabled the choice box allows standard 
-fixed configuration reflectors to be selected. 
+reflector to be used depending on the state of the `Use Configurable Reflector` 
+toggle switch.
+With the `Use Configurable Reflector` toggle switch disabled the choice box 
+allows standard fixed configuration reflectors to be selected. 
 
-Alternatively, enable the `Configure` toggle switch to use a configurable 
-reflector. 
+Alternatively, enable the `Use Configurable Reflector` toggle switch to use a 
+configurable reflector. 
 To configure the reflector click the `Edit` button and modify the loop-back 
 wired pairs in the `Configure Reflector connections` pop-up window:
 
