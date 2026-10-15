@@ -9,12 +9,9 @@
 Maven can be run from the command line as shown below.
 Maven resolves dependencies and builds the application independently of an IDE.
 
-This application simulates the [Enigma Machine](https://en.wikipedia.org/wiki/Enigma_machine). 
+This application simulates the Enigma Machine. 
 Terms such as "ring settings", "stepping", "turnover points" etc. are explained 
-here.
-
-**Note:** _there are no restrictions placed on the Rotor selection, as such some 
-Rotor combinations can be made that may not be available on the real machine._
+[here](https://en.wikipedia.org/wiki/Enigma_machine).
 
 **Note:** _the turnover points for the Commercial, Rocket and SwissK Rotors are 
 guesses and may be incorrect._
@@ -94,8 +91,9 @@ There are three steps to setting up a rotor:
 #### Rotor Selection
 The `Rotor` choice box allows different Rotors to be selected for each of the 
 rotor positions.
-No restrictions are placed on the selection, so combinations can be selected 
-that may not be available on the real machine.
+
+**Note:** _no restrictions are placed on the selection, so rotor combinations 
+can be made that may not be available on the real machine._
 
 #### Ring Settings
 The `Ring Setting` spinners set the ring setting for each corresponding rotor.
@@ -141,13 +139,13 @@ This code has the following points of interest:
   * `Enigma4` is an updated version of [Enigma3](https://github.com/PhilLockett/Enigma3).
   * `Enigma4` simulates the behaviour of the [Enigma machine](https://en.wikipedia.org/wiki/Enigma_machine).
   * `Enigma4` is a Maven project that uses JavaFX, FXML and CSS.
-  * Uses the following custom controllers:
+  * The following custom controllers are used:
     - "RotorControl", to represent rotor settings.
     - "PairSelect", to represent reflector and plugboard settings.
     - "SwitchControl", to represent a toggle switch.
     - "ButtonControl", to represent a button.
-  * Uses subtle linear and radial colour gradients on controls.
-  * Uses a custom top-bar on the Main windows.
+  * Subtle linear and radial colour gradients are used on controls.
+  * A custom top-bar is implemented for the Main window.
   * Uses setShape() to create circular text fields.
   * Data is persisted from one session to the next.
   * A `static` Debug object helps control diagnostic output.
