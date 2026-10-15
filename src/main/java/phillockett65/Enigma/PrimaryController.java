@@ -34,7 +34,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -228,9 +227,6 @@ public class PrimaryController {
      */
 
     @FXML
-    private TitledPane reflectorSetUpTitledPane;
-
-    @FXML
     private ChoiceBox<String> reflectorChoicebox;
 
     @FXML
@@ -267,8 +263,6 @@ public class PrimaryController {
      * Initialize "Reflector" panel.
      */
     private void initializeReflector() {
-        // reflectorSetUpTitledPane.setTooltip(new Tooltip("Select which Reflector (reversing drum) to use"));
-
         reflectorChoicebox.setItems(model.getReflectorList());
         reflectorChoicebox.setTooltip(new Tooltip("Select a Reflector"));
 
@@ -320,9 +314,6 @@ public class PrimaryController {
      */
 
     @FXML
-    private TitledPane rotorSetUpTitledPane;
- 
-    @FXML
     private HBox rotorSetUpHBox;
 
     @FXML
@@ -334,8 +325,6 @@ public class PrimaryController {
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
-        // rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
-
         fourthWheelControl = new SwitchControl("Use Fourth Rotor", false);
         fourthWheelControl.addEventFilter(ControlEvent.ANY, this::handleFourthWheelEvent);
         fourthWheelControl.setTooltip("Select to use a fourth Rotor");
@@ -359,9 +348,6 @@ public class PrimaryController {
      */
 
     @FXML
-    private TitledPane plugboardConnectionsTitledPane;
-
-    @FXML
     private HBox plugboardHBox;
 
     private ButtonControl plugboardEditControl;
@@ -378,8 +364,6 @@ public class PrimaryController {
      * Initialize "Plugboard Connections" panel.
      */
     private void initializePlugboardConnections() {
-        // plugboardConnectionsTitledPane.setTooltip(new Tooltip("Configure the Plugboard using unique wiring pairs"));
-
         plugboardEditControl = new ButtonControl("Edit", true);
         plugboardEditControl.addEventFilter(ControlEvent.ANY, this::handlePlugboardEditEvent);
         plugboardEditControl.setTooltip("Edit the Plugboard");
