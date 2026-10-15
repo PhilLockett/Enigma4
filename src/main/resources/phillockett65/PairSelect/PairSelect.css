@@ -4,6 +4,11 @@
     -fx-border-color: silver;
 }
 
+.label {
+    -fx-text-fill: #dddddd;
+    -fx-font-weight: bold;
+}
+
 .titled-pane{
     -fx-text-fill: #e8e8e8;
 }
@@ -11,27 +16,6 @@
     -fx-background-color: #303030;
     -fx-font-size: 15;
     -fx-font-weight: bold;
-}
-
-.label {
-    -fx-text-fill: #e8e8e8;
-    -fx-font-size: 15;
-    -fx-font-weight: bold;
-    -fx-label-padding: 2;
-    -fx-alignment: center;
-}
-
-.choice-box, .color-picker, .button{
-    -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
-    -fx-text-fill: #e8e8e8;
-    -fx-font-weight: bold;
-    -fx-background-radius: 6;
-}
-.choice-box:hover, .button:hover{
-    -fx-background-color: linear-gradient(to bottom, #DB8682, #9B4642);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 6;
 }
 
 .tooltip{
