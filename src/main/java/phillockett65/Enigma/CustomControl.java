@@ -28,33 +28,23 @@ import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Control;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class CustomControl extends HBox {
 
     private static final String STYLESHEET = "CustomControl.css";
-    protected static final String SELECTED = "control-selected";
+    private static final String CONTROL = "custom-control";
     private static final String HOVER = "control-hover";
-
-    private static final Paint TRACK = Color.SILVER;
-    private static final Paint TRACKHOVER = Color.WHITE;
-
-    private Model model;
+    private static final String THUMB = "control-thumb";
 
     private Rectangle track;
+    private Label label;
     protected Rectangle thumb;
-    protected Label label;
 
     // Dimensions for the track and thumb.
     protected final double h = 22.0;
@@ -65,30 +55,39 @@ public class CustomControl extends HBox {
 
 
     /**
-     * @param state to adjust the appearance to or from.
-     * @param field to adjust the appearance of.
-     * @param style to adjust the appearance to or from.
+     * Adjust the appearance of a Node by adding a style class rule.
+     * @param node to adjust the appearance of.
+     * @param rule to add.
      */
-    protected void setStyleClass(boolean state, Control field, String style) {
-        if (!state) {
-            field.getStyleClass().remove(style);
-        } else {
-            if (!field.getStyleClass().contains(style))
-                field.getStyleClass().add(style);
+    private void addStyleClass(Node node, String rule) {
+        if (!node.getStyleClass().contains(rule)) {
+            node.getStyleClass().add(rule);
         }
     }
 
+    /**
+     * Adjust the appearance of a Node by removing a style class rule.
+     * @param node to adjust the appearance of.
+     * @param rule to remove.
+     */
+    private void removeStyleClass(Node node, String rule) {
+        node.getStyleClass().remove(rule);
+    }
+
+    /**
+     * Action to perform when this control clicked.
+     */
     private void action() {
         fireEvent(new ControlEvent(id));
     }
 
-    private void hoverButton(boolean hovering) {
-        setStyleClass(hovering, label, HOVER);
-        if (hovering) {
-            track.setStroke(TRACKHOVER);
-        } else {
-            track.setStroke(TRACK);
-        }
+    private void entered() {
+        addStyleClass(label, HOVER);
+        addStyleClass(track, HOVER);
+    }
+    private void exited() {
+        removeStyleClass(label, HOVER);
+        removeStyleClass(track, HOVER);
     }
 
 
@@ -119,60 +118,36 @@ public class CustomControl extends HBox {
      */
     public CustomControl(String text, boolean labelLeft, double aspectRation) {
         super();
-        model = Model.getInstance();
 
-        this.setSpacing(model.getSeparation());
+        this.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
+        this.getStyleClass().add(CONTROL);
         this.setAlignment(Pos.CENTER_LEFT);
+
+        this.setOnMouseClicked(event -> action());
+        this.setOnMouseEntered(event -> entered());
+        this.setOnMouseExited(event -> exited());
 
         // Build the track.
         final double w = h * aspectRation;
         track = new Rectangle(0, 0, w, h);
-        Stop[] trackStops = new Stop[]{
-            new Stop(0, Color.web("#444")),
-            new Stop(1, Color.web("#888"))
-        };
-        LinearGradient trackLG = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, trackStops);
-
-        final double p = model.getRoundness();
-        final double a1 = h * p;
-        final double a2 = s * p;
-
-        track.setStrokeWidth(2.0);
-        track.setStroke(TRACK);
-        track.setFill(trackLG);
-        track.setArcWidth(a1);
-        track.setArcHeight(a1);
+        track.getStyleClass().add(CONTROL);
 
         // Build the thumb.
         thumb = new Rectangle(b, b, s, s);
-        Stop[] thumbStops = new Stop[]{
-            new Stop(0, Color.web("#fff")),
-            new Stop(1, Color.web("#999"))
-        };
-        RadialGradient thumbRG = new RadialGradient(0, 0, 0.5, 0.25, 0.5, true, CycleMethod.NO_CYCLE, thumbStops);
-
-        thumb.setFill(thumbRG);
-        thumb.setArcWidth(a2);
-        thumb.setArcHeight(a2);
+        thumb.getStyleClass().add(THUMB);
 
         // Group track and thumb together.
         Group group = new Group(track, thumb);
 
         // Build the label.
         label = new Label(text);
-        label.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
+        label.getStyleClass().add(CONTROL);
 
         if (labelLeft) {
             this.getChildren().addAll(label, group);
         } else {
             this.getChildren().addAll(group, label);
         }
-
-        setStyleClass(true, label, SELECTED);
-
-        this.setOnMouseClicked(event -> action());
-        this.setOnMouseEntered(event -> hoverButton(true));
-        this.setOnMouseExited(event -> hoverButton(false));
     }
 
 

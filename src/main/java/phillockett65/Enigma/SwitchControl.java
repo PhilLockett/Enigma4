@@ -30,8 +30,6 @@ public class SwitchControl extends CustomControl {
     private void syncUI() {
         final double dist = ((h - b) * 2.0) - s;
 
-        setStyleClass(state, label, SELECTED);
-
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(thumb);
         translate.setDuration(duration);

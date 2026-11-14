@@ -64,14 +64,6 @@ public class Model {
     public double getMainWidth() { return stage.getWidth(); }
     public double getMainHeight() { return stage.getHeight(); }
 
-    /**
-     * Get the roundness of buttons and switches. A value of 1.0 gives a 
-     * maximum roundness, whereas a value of 0.0 gives square corners.
-     * @return roundness value between 0.0 and 1.0.
-     */
-    public double getRoundness() { return 1.0; }
-    public double getSeparation() { return 4.0; }
-
 
     /************************************************************************
      * General support code.

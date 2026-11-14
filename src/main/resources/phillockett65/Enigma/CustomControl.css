@@ -1,17 +1,23 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-.root{
-    -fx-background-color: #303030;
-}
-.label{
-    -fx-text-fill: #999999;
-    -fx-font-weight: bold;
-}
 
-.control-selected {
+.custom-control {
+    -fx-spacing: 4;
+    -fx-fill: linear-gradient(to right, #444444, #888888);
     -fx-text-fill: #cccccc;
+    -fx-stroke: #cccccc;
+    -fx-stroke-width: 2;
+    -fx-arc-height: 22;
+    -fx-arc-width: 22;
 }
 
 .control-hover {
     -fx-text-fill: #ffffff;
+    -fx-stroke: #ffffff;
+}
+
+.control-thumb {
+    -fx-fill: radial-gradient(center 50% 25%, radius 50%, #ffffff, #999999);
+    -fx-arc-height: 22;
+    -fx-arc-width: 22;
 }
 
