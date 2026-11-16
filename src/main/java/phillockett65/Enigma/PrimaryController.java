@@ -29,7 +29,10 @@
  */
 package phillockett65.Enigma;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -39,12 +42,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 
 import phillockett65.Debug.Debug;
@@ -64,7 +65,10 @@ public class PrimaryController {
      */
 
     private static final String TOPBARICON = "top-bar-icon";
+    private static final String ICONHOVER = "top-bar-icon-hover";
 
+    // List of Nodes that are re-styled based on mouse hovers.
+    private ObservableList<Node> hoverList = FXCollections.observableArrayList();
 
 
     /************************************************************************
@@ -173,42 +177,57 @@ public class PrimaryController {
         stage.setY(event.getScreenY() - y);
     }
  
- 
+     /**
+     * Mouse has entered the control.
+     */
+    private void entered() {
+        for (Node node : hoverList) {
+            if (!node.getStyleClass().contains(ICONHOVER)) {
+                node.getStyleClass().add(ICONHOVER);
+            }
+        }
+    }
+
+    /**
+     * Mouse has exited the control.
+     */
+    private void exited() {
+        for (Node node : hoverList) {
+            node.getStyleClass().remove(ICONHOVER);
+        }
+    }
+
     /**
      * Builds the cancel button as a Pane and includes the mouse click handler.
      * @return the Pane that represents the cancel button.
      */
     private Pane buildCancel() {
         final double iconSize = 28.0;
-        final double cancelStroke = 2.5;
 
         Pane cancel = new Pane();
         cancel.setPrefWidth(iconSize);
         cancel.setPrefHeight(iconSize);
         cancel.getStyleClass().add(TOPBARICON);
+        hoverList.add(cancel);
 
         double centre = iconSize / 2;
         double radius = centre * 0.7;
 
         Arc arc = new Arc(centre, centre, radius, radius, 120.0, 300.0);
-        arc.setStroke(Color.WHITE);
         arc.getStyleClass().add(TOPBARICON);
-        arc.setStrokeWidth(cancelStroke);
-        arc.setFill(Color.TRANSPARENT);
         arc.setType(ArcType.OPEN);
+        hoverList.add(arc);
 
         double a = centre - (radius * 1.2);
         Line line = new Line(centre, a, centre, centre);
-        line.setStroke(Color.WHITE);
         line.getStyleClass().add(TOPBARICON);
-        line.setStrokeWidth(cancelStroke);
-        line.setStrokeLineCap(StrokeLineCap.ROUND);
+        hoverList.add(line);
 
         cancel.getChildren().addAll(arc, line);
 
-        cancel.setOnMouseClicked(event -> {
-            stage.close();
-        });
+        cancel.setOnMouseClicked(event -> stage.close());
+        cancel.setOnMouseEntered(event -> entered());
+        cancel.setOnMouseExited(event -> exited());
 
         return cancel;
     }

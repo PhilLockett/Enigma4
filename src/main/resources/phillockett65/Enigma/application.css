@@ -13,12 +13,17 @@
 }
 
 .top-bar-icon{
-    -fx-stroke: white;
+    -fx-stroke: #bbbbbb;
+    -fx-stroke-width: 2.5;
+    -fx-stroke-line-cap: round;
+    -fx-fill: transparent;
 }
 
-.top-bar-icon:hover{
+.top-bar-icon-hover{
+    -fx-stroke: white;
     -fx-background-color: red;
 }
+
 
 .heading{
     -fx-text-fill: #e8e8e8;
