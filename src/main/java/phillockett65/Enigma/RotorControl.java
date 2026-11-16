@@ -69,12 +69,12 @@ public class RotorControl extends VBox {
         super();
         Debug.trace(DD, "CustomRotorControl()");
 
-        setSpacing(8);
+        this.setSpacing(8);
         wheelChoicebox = new ChoiceBox<String>();
         ringSettingSpinner = new Spinner<String>();
         rotorOffsetSpinner = new Spinner<String>();
 
-        getChildren().addAll(wheelChoicebox, ringSettingSpinner, rotorOffsetSpinner);
+        this.getChildren().addAll(wheelChoicebox, ringSettingSpinner, rotorOffsetSpinner);
 
         // Initialize "ringList" ObservableList.
         for (int i = 0; i < 26; ++i) {
@@ -99,6 +99,7 @@ public class RotorControl extends VBox {
         wheelChoicebox.setItems(wheelList);
         wheelChoicebox.setValue(wheelList.get(0));
         wheelChoicebox.setTooltip(new Tooltip("Select the " + name + " Rotor"));
+        wheelChoicebox.setPrefWidth(80.0);
 
         // Initialize "Ring Settings" spinner.
         ringSettingSVF = new SpinnerValueFactory.ListSpinnerValueFactory<String>(ringList);

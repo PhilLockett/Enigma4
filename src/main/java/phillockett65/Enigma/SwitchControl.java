@@ -24,15 +24,16 @@
 package phillockett65.Enigma;
 
 import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 public class SwitchControl extends CustomControl {
 
     private void syncUI() {
-        final double dist = ((h - b) * 2.0) - s;
+        final double dist = ((height - padding) * 2.0) - size;
 
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(thumb);
-        translate.setDuration(duration);
+        translate.setDuration(Duration.millis(100));
         if (!state) {
             translate.setByX(-dist);
         } else {

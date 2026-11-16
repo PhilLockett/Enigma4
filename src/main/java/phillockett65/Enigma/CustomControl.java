@@ -23,6 +23,8 @@
  */
 package phillockett65.Enigma;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
@@ -33,7 +35,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 public class CustomControl extends HBox {
 
@@ -42,37 +43,16 @@ public class CustomControl extends HBox {
     private static final String HOVER = "control-hover";
     private static final String THUMB = "control-thumb";
 
-    private Rectangle track;
-    private Label label;
+    // List of Nodes that are re-styled based on mouse hovers.
+    private ObservableList<Node> hoverList = FXCollections.observableArrayList();
+
     protected Rectangle thumb;
 
     // Dimensions for the track and thumb.
-    protected final double h = 22.0;
-    protected final double b = 2.0;
-    protected final double s = h - (2.0 * b);
+    protected final double height = 22.0;
+    protected final double padding = 2.0;
+    protected final double size = height - (2.0 * padding);
 
-    protected final Duration duration = Duration.millis(100);
-
-
-    /**
-     * Adjust the appearance of a Node by adding a style class rule.
-     * @param node to adjust the appearance of.
-     * @param rule to add.
-     */
-    private void addStyleClass(Node node, String rule) {
-        if (!node.getStyleClass().contains(rule)) {
-            node.getStyleClass().add(rule);
-        }
-    }
-
-    /**
-     * Adjust the appearance of a Node by removing a style class rule.
-     * @param node to adjust the appearance of.
-     * @param rule to remove.
-     */
-    private void removeStyleClass(Node node, String rule) {
-        node.getStyleClass().remove(rule);
-    }
 
     /**
      * Action to perform when this control clicked.
@@ -81,13 +61,24 @@ public class CustomControl extends HBox {
         fireEvent(new ControlEvent(id));
     }
 
+    /**
+     * Mouse has entered the control.
+     */
     private void entered() {
-        addStyleClass(label, HOVER);
-        addStyleClass(track, HOVER);
+        for (Node node : hoverList) {
+            if (!node.getStyleClass().contains(HOVER)) {
+                node.getStyleClass().add(HOVER);
+            }
+        }
     }
+
+    /**
+     * Mouse has exited the control.
+     */
     private void exited() {
-        removeStyleClass(label, HOVER);
-        removeStyleClass(track, HOVER);
+        for (Node node : hoverList) {
+            node.getStyleClass().remove(HOVER);
+        }
     }
 
 
@@ -107,7 +98,7 @@ public class CustomControl extends HBox {
     public void setTooltip(String label) {
         Tooltip tip = new Tooltip(label);
         Tooltip.install(this, tip);
-    }        
+    }
 
 
     /**
@@ -128,20 +119,22 @@ public class CustomControl extends HBox {
         this.setOnMouseExited(event -> exited());
 
         // Build the track.
-        final double w = h * aspectRation;
-        track = new Rectangle(0, 0, w, h);
+        final double width = height * aspectRation;
+        Rectangle track = new Rectangle(0, 0, width, height);
         track.getStyleClass().add(CONTROL);
+        hoverList.add(track);
 
         // Build the thumb.
-        thumb = new Rectangle(b, b, s, s);
+        thumb = new Rectangle(padding, padding, size, size);
         thumb.getStyleClass().add(THUMB);
 
         // Group track and thumb together.
         Group group = new Group(track, thumb);
 
         // Build the label.
-        label = new Label(text);
+        Label label = new Label(text);
         label.getStyleClass().add(CONTROL);
+        hoverList.add(label);
 
         if (labelLeft) {
             this.getChildren().addAll(label, group);

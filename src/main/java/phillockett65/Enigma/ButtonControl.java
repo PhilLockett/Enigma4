@@ -24,15 +24,16 @@
 package phillockett65.Enigma;
 
 import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 public class ButtonControl extends CustomControl {
 
     private void syncUI() {
-        final double dist = b;
+        final double dist = padding;
 
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(thumb);
-        translate.setDuration(duration);
+        translate.setDuration(Duration.millis(80));
         translate.setCycleCount(2);
         translate.setAutoReverse(true);
         translate.setByY(dist);
