@@ -195,17 +195,6 @@ public class PrimaryController {
         }
     }
 
-    private double round(double value) {
-        final double SCALE = 1000.0;
-        long i = Math.round(value * SCALE);
-
-        return (double)i / SCALE;
-    }
-
-    private String coord(double x, double y) {
-        return String.valueOf(round(x)) + "," + String.valueOf(round(y)) + " ";
-    }
-
     /**
      * Builds the cancel button as a Pane and includes the mouse click handler.
      * @return the Pane that represents the cancel button.
@@ -219,18 +208,8 @@ public class PrimaryController {
         cancel.getStyleClass().add(TOPBARICON);
         hoverList.add(cancel);
 
-        final double centre = iconSize / 2;
-        final double radius = centre * 0.7;
-
-        final double a = centre - (radius * 1.2);
-        final double b = 5.0;
-        final double c = a + 2.5;
-
-        final String line = "M" + coord(centre, a) + "L" + coord(centre, centre);
-        final String arc =  "M" + coord(centre-b, c) + "A" + coord(radius, radius) + "0 1 0 " + coord(centre+b, c);
-
         SVGPath svg = new SVGPath();
-        svg.setContent(line + arc);
+        svg.setContent("M14.0,2.24 L14.0,14.0 M9.0,4.74 A9.8,9.8 0 1 0 19.0,4.74");
         svg.getStyleClass().add(TOPBARICON);
         hoverList.add(svg);
 
