@@ -40,12 +40,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import phillockett65.Debug.Debug;
@@ -197,33 +195,46 @@ public class PrimaryController {
         }
     }
 
+    private double round(double value) {
+        final double SCALE = 1000.0;
+        long i = Math.round(value * SCALE);
+
+        return (double)i / SCALE;
+    }
+
+    private String coord(double x, double y) {
+        return String.valueOf(round(x)) + "," + String.valueOf(round(y)) + " ";
+    }
+
     /**
      * Builds the cancel button as a Pane and includes the mouse click handler.
      * @return the Pane that represents the cancel button.
      */
-    private Pane buildCancel() {
+    private AnchorPane buildCancel() {
         final double iconSize = 28.0;
 
-        Pane cancel = new Pane();
+        AnchorPane cancel = new AnchorPane();
         cancel.setPrefWidth(iconSize);
         cancel.setPrefHeight(iconSize);
         cancel.getStyleClass().add(TOPBARICON);
         hoverList.add(cancel);
 
-        double centre = iconSize / 2;
-        double radius = centre * 0.7;
+        final double centre = iconSize / 2;
+        final double radius = centre * 0.7;
 
-        Arc arc = new Arc(centre, centre, radius, radius, 120.0, 300.0);
-        arc.getStyleClass().add(TOPBARICON);
-        arc.setType(ArcType.OPEN);
-        hoverList.add(arc);
+        final double a = centre - (radius * 1.2);
+        final double b = 5.0;
+        final double c = a + 2.5;
 
-        double a = centre - (radius * 1.2);
-        Line line = new Line(centre, a, centre, centre);
-        line.getStyleClass().add(TOPBARICON);
-        hoverList.add(line);
+        final String line = "M" + coord(centre, a) + "L" + coord(centre, centre);
+        final String arc =  "M" + coord(centre-b, c) + "A" + coord(radius, radius) + "0 1 0 " + coord(centre+b, c);
 
-        cancel.getChildren().addAll(arc, line);
+        SVGPath svg = new SVGPath();
+        svg.setContent(line + arc);
+        svg.getStyleClass().add(TOPBARICON);
+        hoverList.add(svg);
+
+        cancel.getChildren().add(svg);
 
         cancel.setOnMouseClicked(event -> stage.close());
         cancel.setOnMouseEntered(event -> entered());
