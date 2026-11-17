@@ -149,6 +149,39 @@ public class PrimaryController {
     }
 
 
+    /************************************************************************
+     * Non production code for "Cancel" symbol SVG path generation.
+     */
+
+    // private double round(double value) {
+    //     final double SCALE = 1000.0;
+    //     long i = Math.round(value * SCALE);
+
+    //     return (double)i / SCALE;
+    // }
+
+    // private String coord(double x, double y) {
+    //     return String.valueOf(round(x)) + "," + String.valueOf(round(y)) + " ";
+    // }
+
+    // private String genSVGPath(double iconSize) {
+    //     final double centre = iconSize / 2;
+    //     final double radius = centre * 0.7;
+
+    //     final double a = centre - (radius * 1.2);
+    //     final String line = "M" + coord(centre, a) + "L" + coord(centre, centre);
+
+    //     final double x = centre;
+    //     final double y = centre - radius;
+    //     final double dx = radius * 0.5;         // sin(15)*cos(15) = 0.5
+    //     final double dy = radius * 0.13397;     // sin(15)*sin(15) = 0.13397
+
+    //     final String arc =  "M" + coord(x-dx, y+dy) + "A" + coord(radius, radius) + "0 1 0 " + coord(x+dx, y+dy);
+
+    //     System.out.println(line + arc);
+    //     return line + arc;
+    // }
+
 
     /************************************************************************
      * Support code for "Top Bar" panel.
@@ -209,7 +242,8 @@ public class PrimaryController {
         hoverList.add(cancel);
 
         SVGPath svg = new SVGPath();
-        svg.setContent("M14.0,2.24 L14.0,14.0 M9.0,4.74 A9.8,9.8 0 1 0 19.0,4.74");
+        svg.setContent("M14.0,2.24 L14.0,14.0 M9.1,5.513 A9.8,9.8 0 1 0 18.9,5.513");
+        // svg.setContent(genSVGPath(iconSize));
         svg.getStyleClass().add(TOPBARICON);
         hoverList.add(svg);
 
