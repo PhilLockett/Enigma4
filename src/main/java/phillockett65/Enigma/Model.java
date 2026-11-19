@@ -545,7 +545,7 @@ public class Model {
 
     private boolean show = false;
     private boolean persist = false;
-    private int setting = 1;
+    private int setting = 0;
     private ObservableList<Integer> settingsList = FXCollections.observableArrayList();
 
     public boolean isShow() { return show; }

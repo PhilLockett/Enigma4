@@ -108,6 +108,15 @@ public class PrimaryController {
         this.stage = stage;
         model.init(stage);
         syncUI();
+
+        // Finish setting up settingsChoicebox here. Set the value BEFORE
+        // adding the listener so we don't trip the handler.
+        settingsChoicebox.setValue(model.getSetting());
+        settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            model.dailySettings(newValue);
+            syncUI();
+        });
+
         if (!model.isDefaulted()) {
             stage.setX(model.getMainXPos());
             stage.setY(model.getMainYPos());
@@ -145,7 +154,6 @@ public class PrimaryController {
         fourthWheelControl.setSelected(model.isFourthWheel());
         showStepsControl.setSelected(model.isShow());
         persistControl.setSelected(model.isPersist());
-        settingsChoicebox.setValue(model.getSetting());
 
         displayPlugs();
     }
@@ -481,11 +489,6 @@ public class PrimaryController {
 
         settingsChoicebox.setItems(model.getSettingsList());
         settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
-
-        settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
-            model.dailySettings(newValue);
-            syncUI();
-        });
 
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
