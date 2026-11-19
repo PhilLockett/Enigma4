@@ -27,9 +27,11 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -48,7 +50,10 @@ public class App extends Application {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("Enigma 4.0.1");
+        ObservableList<Image> icons = stage.getIcons();
+        icons.add(new Image(getClass().getResourceAsStream("icon64.png")));
+
+        stage.setTitle("Enigma 4.0.2");
         stage.setOnCloseRequest(e -> Platform.exit());
         stage.resizableProperty().setValue(false);
         stage.initStyle(StageStyle.UNDECORATED);

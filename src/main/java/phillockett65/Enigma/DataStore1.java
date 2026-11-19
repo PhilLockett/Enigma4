@@ -209,6 +209,7 @@ public class DataStore1 extends DataStore {
       */
     private void dump() {
         Debug.info(DD, "");
+        Debug.info(DD, "DataStore1:");
         Debug.info(DD, "mainX = " + mainX);
         Debug.info(DD, "mainY = " + mainY);
         Debug.info(DD, "");

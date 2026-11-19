@@ -128,7 +128,7 @@ public class PrimaryController {
         model.setMainPos(stage.getX(), stage.getY());
 
         // Write current state to disc using the latest version of DataStore.
-        DataStore1.writeData();
+        DataStore2.writeData();
     }
 
     /**
@@ -144,6 +144,8 @@ public class PrimaryController {
 
         fourthWheelControl.setSelected(model.isFourthWheel());
         showStepsControl.setSelected(model.isShow());
+        persistControl.setSelected(model.isPersist());
+        settingsChoicebox.setValue(model.getSetting());
 
         displayPlugs();
     }
@@ -441,6 +443,11 @@ public class PrimaryController {
     private SwitchControl showStepsControl;
 
     @FXML
+    private HBox persistHBox;
+
+    private SwitchControl persistControl;
+
+    @FXML
     private ChoiceBox<Integer> settingsChoicebox;
 
     @FXML
@@ -465,6 +472,12 @@ public class PrimaryController {
         showStepsControl.setTooltip("Select to show each translation step on the command line");
 
         showStepsHBox.getChildren().add(showStepsControl);
+
+        persistControl = new SwitchControl("Persist IO", false);
+        persistControl.addEventFilter(ControlEvent.ANY, this::handlePersistEvent);
+        persistControl.setTooltip("Persist last key press and translation");
+
+        persistHBox.getChildren().add(persistControl);
 
         settingsChoicebox.setItems(model.getSettingsList());
         settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
@@ -516,8 +529,10 @@ public class PrimaryController {
         final int index = Mapper.letterToIndex(keyCode.getChar());
         if (currentKey == index) {
             currentKey = -1;
-            keyIO.setText("");
-            lampIO.setText("");
+            if (model.isPersist() == false) {
+                keyIO.setText("");
+                lampIO.setText("");
+            }
         }
     }
 
@@ -526,6 +541,14 @@ public class PrimaryController {
 
         if (event.getEventType() == ControlEvent.CONTROL_TOGGLED) {
             model.setShow(event.isOn());
+        }
+    }
+
+    private void handlePersistEvent(ControlEvent event) {
+        Debug.trace(DD, "handlePersistEvent() " + event.isOn());
+
+        if (event.getEventType() == ControlEvent.CONTROL_TOGGLED) {
+            model.setPersist(event.isOn());
         }
     }
 

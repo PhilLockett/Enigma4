@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,7 +18,11 @@
    <children>
       <HBox fx:id="topBar" alignment="CENTER" onMouseDragged="#topBarOnMouseDragged" onMousePressed="#topBarOnMousePressed" prefHeight="28.0" styleClass="top-bar">
          <children>
-            <Label fx:id="headingLabel" contentDisplay="TEXT_ONLY" styleClass="heading" text="Enigma 3.0">
+            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icon64.png" />
+               </image></ImageView>
+            <Label fx:id="headingLabel" contentDisplay="TEXT_ONLY" styleClass="heading" text="Enigma 4.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -115,6 +121,11 @@
                               <Region HBox.hgrow="ALWAYS" />
                               <Label text="Default Settings: " />
                               <ChoiceBox fx:id="settingsChoicebox" prefWidth="50.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="24.0" prefWidth="20.0">
+                           <children>
+                              <HBox fx:id="persistHBox" prefHeight="100.0" prefWidth="200.0" />
                            </children>
                         </HBox>
                         <HBox fx:id="mainIO" prefWidth="200.0">

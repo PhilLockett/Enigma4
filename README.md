@@ -124,6 +124,11 @@ the current configuration settings.
 When the `Show Translation` toggle switch is enabled, all the individual 
 translation steps are displayed on the command line.
 
+#### Persist IO
+When the `Persist IO` toggle switch is enabled, the last key press and it's 
+translation will remain displayed. When disabled, the display will be cleared 
+when the key is released.
+
 #### Default Settings
 The `Default Settings` choice box allows pre-configured settings to be 
 selected from the "Luftwaffe Enigma key list number 649". 
@@ -149,4 +154,4 @@ This code has the following points of interest:
   * Uses setShape() to create circular text fields.
   * Data is persisted from one session to the next.
   * A `static` Debug object helps control diagnostic output.
-  * Rotor combinations can be selected that may not be available on the real machine.
+

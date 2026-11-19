@@ -140,13 +140,16 @@ public class Model {
         setRotorState(MIDDLE, "II", 22, 18);
         setRotorState(RIGHT, "V", 25, 0);
 
-        setShow(false);
-
         plugboardControl.clear();
+
+        setShow(false);
+        setPersist(true);
+        setSetting(0);
     }
 
     public void dailySettings(int date) {
 
+        setSetting(date);
         SettingsData settings = keyList649[date];
 
         ArrayList<String> list = Mapper.splitWords(settings.getReflector());
@@ -172,10 +175,14 @@ public class Model {
      */
 
     /**
-     * Call the static DataStore1 method, to read the data from disc.
+     * Successively call the static methods DataStore2 and DataStore1, to read 
+     * the latest data from disc.
      * @return true if data successfully read from disc, false otherwise.
      */
     private boolean readData() {
+        if (DataStore2.readData() == true) {
+            return true;
+        }
         if (DataStore1.readData() == true) {
             return true;
         }
@@ -537,10 +544,16 @@ public class Model {
      */
 
     private boolean show = false;
+    private boolean persist = false;
+    private int setting = 1;
     private ObservableList<Integer> settingsList = FXCollections.observableArrayList();
 
     public boolean isShow() { return show; }
     public void setShow(boolean state) { show = state; }
+    public boolean isPersist() { return persist; }
+    public void setPersist(boolean state) { persist = state; }
+    public int getSetting() { return setting; }
+    public void setSetting(int state) { setting = state; }
 
     private Mapper keyboard;
     private Mapper lampboard;
